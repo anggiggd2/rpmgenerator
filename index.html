@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPM Generator AI Kurikulum Merdeka</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for sidebar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Print styles for A4 layout inside preview */
+        .a4-paper {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Editor base styles */
+        #print-area h1 { font-size: 1.5rem; font-weight: bold; text-align: center; margin-bottom: 1.5rem; }
+        #print-area h2 { font-size: 1.1rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        #print-area h3 { font-size: 1.05rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        #print-area h4 { font-size: 1rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+        #print-area p { margin-bottom: 0.5rem; text-align: justify; }
+        #print-area ul, #print-area ol { margin-left: 1.5rem; margin-bottom: 0.5rem; }
+        #print-area ul { list-style-type: disc; }
+        #print-area ol { list-style-type: decimal; }
+        #print-area li { margin-bottom: 0.25rem; text-align: justify; }
+        #print-area table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.95rem; }
+        #print-area th, #print-area td { border: 1px solid #000; padding: 8px; vertical-align: top; }
+        #print-area th { background-color: #f3f4f6; font-weight: bold; text-align: left; }
+        
+        .nested-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        .nested-table th, .nested-table td { border: 1px solid #000; padding: 4px 6px; font-size: 0.9rem; }
+        .nested-table th { background-color: #e2e8f0; text-align: center; }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex overflow-hidden font-sans text-gray-800">
+
+    <div class="w-full md:w-[450px] bg-white h-full border-r border-gray-200 flex flex-col z-10 shadow-lg">
+        <div class="p-5 border-b border-gray-200 bg-blue-700 text-white flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">RPM Generator AI</h1>
+                <p class="text-xs text-blue-200">Kurikulum Merdeka</p>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-5">
+            <form id="rpmForm" class="space-y-5">
+
+                <!-- Disclaimer -->
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h3 class="font-semibold text-sm text-green-800 mb-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        Catatan Penting
+                    </h3>
+                    <p class="text-[11px] text-green-700 leading-relaxed">Hasil RPM yang dihasilkan oleh AI ini bersifat sebagai referensi awal dan tidak sepenuhnya bersifat final. Bapak/Ibu Guru dapat menyesuaikan kembali isinya dengan kebutuhan, karakteristik peserta didik, serta kondisi pembelajaran di sekolah masing-masing.</p>
+                </div>
+                
+                <!-- Identitas Penyusun -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Identitas Penyusun</h3>
+                    <div class="space-y-3">
+                        <div><label class="block text-xs font-medium text-gray-600">Nama Penyusun</label><input type="text" id="guruNama" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Budi Santoso, M.Pd"></div>
+                        <div><label class="block text-xs font-medium text-gray-600">NIP Guru</label><input type="text" id="guruNip" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="-"></div>
+                        <div><label class="block text-xs font-medium text-gray-600">Nama Kepala Sekolah</label><input type="text" id="kepsekNama" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Dra. Siti Aminah"></div>
+                        <div><label class="block text-xs font-medium text-gray-600">NIP Kepala Sekolah</label><input type="text" id="kepsekNip" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="-"></div>
+                        <div><label class="block text-xs font-medium text-gray-600">Nama Sekolah</label><input type="text" id="sekolah" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="SMA Negeri 1 Nusantara"></div>
+                    </div>
+                </div>
+
+                <!-- Informasi Pembelajaran -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Informasi Pembelajaran</h3>
+                    <div class="space-y-3">
+                        <div><label class="block text-xs font-medium text-gray-600">Jenjang Sekolah</label>
+                            <select id="jenjang" onchange="updateJenjangUI(this.value)" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option value="SD">SD</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA" selected>SMA</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-medium text-gray-600">Mata Pelajaran</label><input type="text" id="mapel" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Biologi / IPAS"></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Fase & Kelas</label><input type="text" id="kelas" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Fase E / Kelas 10"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-medium text-gray-600">Semester</label>
+                                <select id="semester" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option>Ganjil</option><option>Genap</option>
+                                </select>
+                            </div>
+                            <div><label class="block text-xs font-medium text-gray-600">Tahun Pelajaran</label><input type="text" id="tahun" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" value="2025/2026"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-medium text-gray-600">Elemen Mapel</label><input type="text" id="elemen" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Pemahaman Biologi"></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Alokasi Waktu</label><input type="text" id="waktu" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="2 JP (2 x 45 Menit)"></div>
+                        </div>
+                        <div><label class="block text-xs font-medium text-gray-600">Topik / Sub Materi</label><input type="text" id="topik" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Virus dan Peranannya"></div>
+                    </div>
+                </div>
+
+                <!-- Capaian & Tujuan -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Capaian & Tujuan</h3>
+                    <div class="space-y-3">
+                        <div><label class="block text-xs font-medium text-gray-600">Capaian Pembelajaran (CP)</label><textarea id="cp" required rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm"></textarea></div>
+                        <div><label class="block text-xs font-medium text-gray-600">Tujuan Pembelajaran (TP)</label><textarea id="tp" required rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- Strategi Pembelajaran -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>Strategi Pembelajaran</h3>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-medium text-gray-600">Target Murid</label>
+                                <select id="target" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option>Reguler / Tipikal</option>
+                                    <option>Peserta didik dengan kesulitan belajar</option>
+                                    <option>Pencapaian tinggi (HOTS)</option>
+                                    <option>Kelas Inklusi</option>
+                                </select>
+                            </div>
+                            <div><label class="block text-xs font-medium text-gray-600">Pendekatan</label>
+                                <select id="pendekatan" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option>Pendekatan Saintifik</option>
+                                    <option>TPACK</option>
+                                    <option>CRT</option>
+                                    <option>TaRL</option>
+                                    <option>Pendekatan Kontekstual</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div><label class="block text-xs font-medium text-gray-600">Pembelajaran Mendalam</label>
+                            <div class="grid grid-cols-3 gap-2 mt-1 text-xs" id="pendekatanMendalamContainer">
+                                <label class="flex items-center"><input type="checkbox" value="Bermakna" class="mr-1 rounded" checked> Bermakna</label>
+                                <label class="flex items-center"><input type="checkbox" value="Berkesadaran" class="mr-1 rounded" checked> Berkesadaran</label>
+                                <label class="flex items-center"><input type="checkbox" value="Menggembirakan" class="mr-1 rounded" checked> Menggembirakan</label>
+                            </div>
+                        </div>
+                        
+                        <div><label class="block text-xs font-medium text-gray-600">Model Pembelajaran</label>
+                            <select id="model" onchange="toggleCustomModel()" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option>Project Based Learning (PjBL)</option>
+                                <option>Problem Based Learning (PBL)</option>
+                                <option>Inquiry Learning</option>
+                                <option>Discovery Learning</option>
+                                <option>Cooperative Learning</option>
+                                <option>Contextual Teaching Learning (CTL)</option>
+                                <option>Game Based Learning</option>
+                                <option>Blended Learning - Station Rotation</option>
+                                <option>Blended Learning - Flipped Classroom</option>
+                                <option>Blended Learning - Lab Rotation</option>
+                                <option value="Lainnya">Lainnya (Tulis Sendiri)</option>
+                            </select>
+                            <input type="text" id="customModel" class="mt-2 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm hidden" placeholder="Ketik model Anda...">
+                        </div>
+                        <div><label class="block text-xs font-medium text-gray-600">Metode & Target Produk</label>
+                            <input type="text" id="metode" required class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm mb-2" placeholder="Metode: Diskusi, Tanya Jawab...">
+                            <input type="text" id="targetProduk" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Produk: Poster, Video, Laporan...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pengelolaan Kinerja PMM -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-teal-500 rounded-full mr-2"></span>Pengelolaan Kinerja (PMM)</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <select id="indikatorKinerja" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option value="">-- Opsional: Pilih Indikator --</option>
+                                <option value="Keteraturan Suasana Kelas">Keteraturan Suasana Kelas</option>
+                                <option value="Penerapan Disiplin Positif">Penerapan Disiplin Positif</option>
+                                <option value="Umpan Balik Konstruktif">Umpan Balik Konstruktif</option>
+                                <option value="Perhatian dan Kepedulian">Perhatian dan Kepedulian</option>
+                                <option value="Ekspektasi pada Peserta Didik">Ekspektasi pada Peserta Didik</option>
+                                <option value="Aktivitas Interaktif">Aktivitas Interaktif</option>
+                                <option value="Instruksi Pembelajaran">Instruksi Pembelajaran</option>
+                                <option value="Instruksi yang Adaptif">Instruksi yang Adaptif</option>
+                            </select>
+                        </div>
+                        <div id="fokusPerilakuContainer" class="hidden">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Ceklis Fokus Observasi:</label>
+                            <div id="fokusPerilakuList" class="space-y-2 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profil Lulusan & Sarpras -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>Profil Lulusan & Sarpras</h3>
+                    
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Dimensi Profil Lulusan</label>
+                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs" id="profilContainer">
+                        <label class="flex items-center"><input type="checkbox" value="Keimanan & Ketakwaan" class="mr-2 rounded" checked> Keimanan & Ketakwaan</label>
+                        <label class="flex items-center"><input type="checkbox" value="Kewargaan" class="mr-2 rounded"> Kewargaan</label>
+                        <label class="flex items-center"><input type="checkbox" value="Penalaran Kritis" checked class="mr-2 rounded"> Penalaran Kritis</label>
+                        <label class="flex items-center"><input type="checkbox" value="Kreativitas" checked class="mr-2 rounded"> Kreativitas</label>
+                        <label class="flex items-center"><input type="checkbox" value="Kolaborasi" class="mr-2 rounded"> Kolaborasi</label>
+                        <label class="flex items-center"><input type="checkbox" value="Kemandirian" class="mr-2 rounded"> Kemandirian</label>
+                        <label class="flex items-center"><input type="checkbox" value="Kesehatan" class="mr-2 rounded"> Kesehatan</label>
+                        <label class="flex items-center"><input type="checkbox" value="Komunikasi" class="mr-2 rounded"> Komunikasi</label>
+                    </div>
+
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Sarana Prasarana</label>
+                    <div class="grid grid-cols-2 gap-2 text-xs" id="sarprasContainer">
+                        <label class="flex items-center"><input type="checkbox" value="LCD Projector" checked class="mr-2 rounded"> LCD Projector</label>
+                        <label class="flex items-center"><input type="checkbox" value="Laptop Guru" checked class="mr-2 rounded"> Laptop Guru</label>
+                        <label class="flex items-center"><input type="checkbox" value="Chromebook/Gawai Murid" class="mr-2 rounded"> Gawai Murid</label>
+                        <label class="flex items-center"><input type="checkbox" value="Jaringan Internet" checked class="mr-2 rounded"> Internet/WiFi</label>
+                        <label class="flex items-center"><input type="checkbox" value="Papan Tulis & Spidol" checked class="mr-2 rounded"> Papan Tulis</label>
+                        <label class="flex items-center"><input type="checkbox" value="Alat Peraga Edukatif (APE)" class="mr-2 rounded"> Alat Peraga</label>
+                        <label class="flex items-center"><input type="checkbox" value="LKPD Cetak" checked class="mr-2 rounded"> LKPD Cetak</label>
+                        <label class="flex items-center"><input type="checkbox" value="PID (Papan Interaktif Digital)" class="mr-2 rounded"> PID</label>
+                    </div>
+                    <input type="text" id="customSarpras" class="mt-2 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Tambah sarana lain (pisahkan koma)...">
+                </div>
+
+                <!-- Kerangka Pembelajaran (Bagian II.e dari struktur RPM resmi) -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>Kerangka Pembelajaran</h3>
+                    <p class="text-xs text-gray-500 mb-3">Komponen wajib RPM 2025 (boleh dikosongkan, AI/template akan mengisi).</p>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Lintas Disiplin Ilmu</label>
+                            <input type="text" id="lintasDisiplin" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Matematika, IPA, Bahasa Indonesia, PPKn">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Praktik Pedagogis</label>
+                            <input type="text" id="praktikPedagogis" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Diferensiasi, scaffolding, dialog reflektif">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Kemitraan Pembelajaran</label>
+                            <input type="text" id="kemitraan" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Orang tua, komunitas RT, perpustakaan desa, narasumber">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Lingkungan Pembelajaran</label>
+                            <input type="text" id="lingkungan" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Kelas, lab, halaman sekolah, lingkungan rumah">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Pemanfaatan Digital</label>
+                            <input type="text" id="pemanfaatanDigital" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Canva, Quizizz, YouTube, Google Form, AI Chatbot">
+                            <div class="mt-2">
+                                <label class="block text-xs font-medium text-gray-600">Pengalaman Belajar <span class="text-gray-400 font-normal">(pilih sesuai kebutuhan)</span></label>
+                                <div class="mt-1 grid grid-cols-3 gap-2 text-xs" id="pengalamanBelajarContainer">
+                                    <label class="flex items-center"><input type="checkbox" value="Memahami" class="mr-1 rounded pengalamanBelajar" checked> Memahami</label>
+                                    <label class="flex items-center"><input type="checkbox" value="Mengaplikasi" class="mr-1 rounded pengalamanBelajar" checked> Mengaplikasi</label>
+                                    <label class="flex items-center"><input type="checkbox" value="Merefleksi" class="mr-1 rounded pengalamanBelajar" checked> Merefleksi</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Buku Paket <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <input type="text" id="bukuPaket" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Buku PPKn Kelas X Kemendikbud 2023, Bab 3 hal. 45-60">
+                            <p class="text-[10px] text-gray-500 mt-1 italic">Sumber bacaan utama yang akan digunakan dalam pembelajaran (judul, penerbit, halaman).</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Pemanfaatan Konten di Ruang Murid <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <div class="mt-1 grid grid-cols-2 gap-2 mb-2" id="jenisRuangMuridContainer">
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Modul Ajar" class="mr-1.5 rounded jenisRuangMurid"> Modul Ajar</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Bahan Ajar" class="mr-1.5 rounded jenisRuangMurid"> Bahan Ajar</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Video Pembelajaran" class="mr-1.5 rounded jenisRuangMurid"> Video Pembelajaran</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="MPI (Media Pembelajaran Interaktif)" class="mr-1.5 rounded jenisRuangMurid"> MPI</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Gim Edukasi" class="mr-1.5 rounded jenisRuangMurid"> Gim Edukasi</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Bank Soal" class="mr-1.5 rounded jenisRuangMurid"> Bank Soal</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="LKPD" class="mr-1.5 rounded jenisRuangMurid"> LKPD</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Asesmen" class="mr-1.5 rounded jenisRuangMurid"> Asesmen</label>
+                                <label class="flex items-center text-xs"><input type="checkbox" value="Buku Digital" class="mr-1.5 rounded jenisRuangMurid"> Buku Digital</label>
+                            </div>
+                            <input type="text" id="ruangMurid" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Detail judul/topik konten Ruang Murid (opsional, contoh: 'tentang Konflik Sosial')">
+                            <p class="text-[10px] text-gray-500 mt-1 italic">Centang jenis konten dari platform Ruang Murid (Kemendikbudristek). Detail bisa ditulis di kolom di atas.</p>
+
+                            <label class="block text-xs font-medium text-gray-600 mt-3">Konten Lain dari Luar Ruang Murid <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <input type="text" id="kontenLuarRM" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Contoh: Wordwall (kuis interaktif), Khan Academy (video), Educandy, Liveworksheets">
+                            <p class="text-[10px] text-gray-500 mt-1 italic">Konten/aplikasi/platform lain di luar Ruang Murid yang akan digunakan dalam pembelajaran.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Draft Kegiatan & Asesmen -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-semibold text-sm text-gray-700 mb-3 flex items-center"><span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>Draft Ide Guru</h3>
+                    <p class="text-xs text-gray-500 mb-3">Semua kolom boleh dikosongkan, AI/template akan mengisi. Tulis poin ide Anda jika ingin AI mengembangkannya secara terstruktur.</p>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Pendahuluan <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <textarea id="draftPendahuluan" rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Boleh dikosongkan. Contoh: Ice breaking tebak kata, apersepsi mengaitkan..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Kegiatan Inti <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <textarea id="draftInti" rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Boleh dikosongkan. Contoh: Murid observasi lingkungan sekitar, diskusi kelompok membuat mind map..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Penutup <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <textarea id="draftPenutup" rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Boleh dikosongkan. Contoh: Refleksi pakai sticky notes, doa bersama..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Asesmen Awal <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <textarea id="draftAsesmenAwal" rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Boleh dikosongkan. Contoh: 3 pertanyaan pemantik tentang pengalaman mereka dengan materi..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Asesmen Formatif &mdash; Proses <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <textarea id="draftAsesmenFormatif" rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Boleh dikosongkan. Contoh: Penilaian unjuk kerja presentasi kelompok, lembar observasi..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Asesmen Sumatif &mdash; Akhir <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <textarea id="draftAsesmenSumatif" rows="2" class="mt-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Boleh dikosongkan. Contoh: 5 soal pilihan ganda di Quizizz, tugas esai proyek akhir..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 pb-8">
+                    <button type="submit" id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+                        Generate RPM
+                    </button>
+
+                    <!-- Ucapan & Medsos Pengembang -->
+                    <div class="mt-5 pt-4 border-t border-gray-200 text-center">
+                        <p class="text-xs text-gray-600 font-medium mb-3">Terima kasih, semoga bisa membantu 🙏</p>
+                        <p class="text-[10px] text-gray-500 mb-2">Ikuti media sosial pengembang:</p>
+                        <div class="flex justify-center items-center gap-4">
+                            <!-- TikTok -->
+                            <a href="https://www.tiktok.com/@anggiperdana21?_r=1&_t=ZS-95rgOfCq3bI" target="_blank" rel="noopener noreferrer" title="TikTok" class="text-gray-600 hover:text-black transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg>
+                            </a>
+                            <!-- Instagram -->
+                            <a href="https://www.instagram.com/anggiperdana89?igsh=MWtsaWNkNWxpNHFqbg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" title="Instagram" class="text-gray-600 hover:text-pink-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            </a>
+                            <!-- YouTube -->
+                            <a href="https://youtube.com/@pakanggi_cikgupulau?si=G_DgO-KMSEH55FBm" target="_blank" rel="noopener noreferrer" title="YouTube" class="text-gray-600 hover:text-red-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex-1 bg-gray-200 overflow-y-auto relative flex flex-col items-center pt-8 pb-12">
+        
+        <div id="loadingOverlay" class="hidden absolute inset-0 bg-gray-200/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mb-4"></div>
+            <h2 class="text-xl font-bold text-gray-800">Menyusun Dokumen RPM...</h2>
+            <p class="text-gray-600 mt-2 text-center px-4" id="loadingText">Mencoba AI gratis lalu fallback ke template cerdas...<br>Mohon tunggu sekitar 5-15 detik.</p>
+        </div>
+
+        <div class="w-[210mm] bg-white rounded-t-xl shadow-sm border-b p-4 flex justify-between items-center z-20 sticky top-0">
+            <div class="flex items-center gap-2">
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-green-200">Dokumen Siap Cetak</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="copyToClipboard()" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-sm font-medium transition shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Salin ke Word
+                </button>
+                <button onclick="exportToWord()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium transition shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Unduh .doc
+                </button>
+            </div>
+        </div>
+
+        <div id="print-area" class="a4-paper shadow-xl rounded-b-xl relative">
+            <div class="text-center w-full mb-8 text-gray-400 italic mt-20">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 opacity-50"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Silakan isi form di samping (tidak perlu API Key).<br>
+                Klik "Generate RPM" untuk menghasilkan dokumen Rencana Pembelajaran Mendalam.<br>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-green-600 text-white px-6 py-3 rounded shadow-lg font-medium z-50">
+        Berhasil disalin! Silakan paste di Word/Docs.
+    </div>
+
+    <script>
+        // ===== CLAUDE AI GENERATOR =====
+
+        function toggleCustomModel() {
+            const modelSelect = document.getElementById('model');
+            const customModelInput = document.getElementById('customModel');
+            if (modelSelect.value === "Lainnya") {
+                customModelInput.classList.remove('hidden');
+            } else {
+                customModelInput.classList.add('hidden');
+            }
+        }
+
+        // Data PMM Lengkap (8 Indikator)
+        const pmmData = {
+            "Keteraturan Suasana Kelas": [
+                "Guru melakukan komunikasi positif untuk membangun suasana kelas yang kondusif",
+                "Guru melakukan strategi pengelompokan untuk mengaktifkan keterlibatan peserta didik",
+                "Guru membuat dan mengingatkan aturan/kesepakatan kelas"
+            ],
+            "Penerapan Disiplin Positif": [
+                "Guru melakukan refleksi dinamika kelas untuk menerapkan kesepakatan kelas",
+                "Guru melakukan penguatan positif terhadap perilaku yang sesuai atau mendukung kesepakatan kelas",
+                "Guru memfasilitasi peserta didik menyadari konsekuensi dan memperbaiki perilaku melanggarnya (restitusi)"
+            ],
+            "Umpan Balik Konstruktif": [
+                "Guru memberikan umpan balik spesifik dan berorientasi tujuan",
+                "Guru memberikan umpan balik yang fokus pada proses atau usaha peserta didik",
+                "Guru menunjukkan kesediaan mendiskusikan umpan balik dengan peserta didik"
+            ],
+            "Perhatian dan Kepedulian": [
+                "Guru menunjukkan empati untuk mendapatkan pemahaman utuh tentang peserta didik",
+                "Guru menunjukkan pemahaman terhadap kebutuhan, kondisi dan karakteristik peserta didik",
+                "Guru mengakui dan menghargai usaha yang ditunjukkan peserta didik"
+            ],
+            "Ekspektasi pada Peserta Didik": [
+                "Guru mengkomunikasikan harapannya yang tinggi terhadap masa depan seluruh peserta didiknya",
+                "Guru mengkomunikasikan harapan positif terhadap semua peserta didik secara setara dan tanpa diskriminasi",
+                "Guru memberikan tantangan yang bermakna disertai motivasi untuk mencapainya"
+            ],
+            "Aktivitas Interaktif": [
+                "Guru memfasilitasi kegiatan pembelajaran yang memberi peran pada semua peserta didik",
+                "Guru mengajukan pertanyaan yang menstimulasi proses diskusi dan berpikir kritis",
+                "Guru memfasilitasi terjadinya diskusi kelompok yang interaktif, kritis dan inklusif"
+            ],
+            "Instruksi Pembelajaran": [
+                "Guru memberikan penjelasan yang mudah dipahami, menarik dan relevan",
+                "Guru memberikan contoh yang kontekstual dan relevan dengan keseharian peserta didik",
+                "Guru menyampaikan penjelasan secara terstruktur dan logis"
+            ],
+            "Instruksi yang Adaptif": [
+                "Guru melakukan strategi pembelajaran yang responsif terhadap peserta didik",
+                "Guru melakukan penyesuaian pembelajaran mengacu kondisi, kebutuhan dan karakteristik peserta didik",
+                "Guru merefleksikan praktik pembelajaran yang melibatkan peserta didik"
+            ]
+        };
+
+        document.getElementById('indikatorKinerja').addEventListener('change', function() {
+            const container = document.getElementById('fokusPerilakuContainer');
+            const list = document.getElementById('fokusPerilakuList');
+            const selected = this.value;
+
+            list.innerHTML = ''; 
+
+            if (selected && pmmData[selected]) {
+                container.classList.remove('hidden');
+                pmmData[selected].forEach(fokus => {
+                    const label = document.createElement('label');
+                    label.className = "flex items-start gap-2 cursor-pointer";
+                    label.innerHTML = `
+                        <input type="checkbox" value="${fokus}" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500" checked> 
+                        <span class="text-gray-700 leading-tight">${fokus}</span>
+                    `;
+                    list.appendChild(label);
+                });
+            } else {
+                container.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('rpmForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            let selectedModel = document.getElementById('model').value;
+            if (selectedModel === "Lainnya") selectedModel = document.getElementById('customModel').value || "Model Pembelajaran Interaktif";
+
+            let sarprasArr = Array.from(document.querySelectorAll('#sarprasContainer input:checked')).map(cb => cb.value);
+            const customSarpras = document.getElementById('customSarpras').value;
+            if(customSarpras) {
+                sarprasArr.push(customSarpras);
+            }
+
+            const formData = {
+                guruNama: document.getElementById('guruNama').value,
+                guruNip: document.getElementById('guruNip').value,
+                kepsekNama: document.getElementById('kepsekNama').value,
+                kepsekNip: document.getElementById('kepsekNip').value,
+                sekolah: document.getElementById('sekolah').value,
+                mapel: document.getElementById('mapel').value,
+                kelas: document.getElementById('kelas').value,
+                jenjang: document.getElementById('jenjang').value,
+                semester: document.getElementById('semester').value,
+                tahun: document.getElementById('tahun').value,
+                elemen: document.getElementById('elemen').value,
+                waktu: document.getElementById('waktu').value,
+                topik: document.getElementById('topik').value,
+                cp: document.getElementById('cp').value,
+                tp: document.getElementById('tp').value,
+                target: document.getElementById('target').value,
+                pendekatan: document.getElementById('pendekatan').value,
+                pendekatanMendalam: Array.from(document.querySelectorAll('#pendekatanMendalamContainer input:checked')).map(cb => cb.value),
+                model: selectedModel,
+                metode: document.getElementById('metode').value,
+                targetProduk: document.getElementById('targetProduk').value,
+                indikatorKinerja: document.getElementById('indikatorKinerja').value,
+                fokusPerilaku: Array.from(document.querySelectorAll('#fokusPerilakuList input:checked')).map(cb => cb.value),
+                profil: Array.from(document.querySelectorAll('#profilContainer input:checked')).map(cb => cb.value),
+                sarpras: sarprasArr,
+                lintasDisiplin: document.getElementById('lintasDisiplin').value,
+                praktikPedagogis: document.getElementById('praktikPedagogis').value,
+                kemitraan: document.getElementById('kemitraan').value,
+                lingkungan: document.getElementById('lingkungan').value,
+                pemanfaatanDigital: document.getElementById('pemanfaatanDigital').value,
+                pengalamanBelajar: Array.from(document.querySelectorAll('.pengalamanBelajar:checked')).map(cb => cb.value),
+                bukuPaket: document.getElementById('bukuPaket').value,
+                jenisRuangMurid: Array.from(document.querySelectorAll('.jenisRuangMurid:checked')).map(cb => cb.value),
+                ruangMurid: document.getElementById('ruangMurid').value,
+                kontenLuarRM: document.getElementById('kontenLuarRM').value,
+                draftPendahuluan: document.getElementById('draftPendahuluan').value,
+                draftInti: document.getElementById('draftInti').value,
+                draftPenutup: document.getElementById('draftPenutup').value,
+                draftAsesmenAwal: document.getElementById('draftAsesmenAwal').value,
+                draftAsesmenFormatif: document.getElementById('draftAsesmenFormatif').value,
+                draftAsesmenSumatif: document.getElementById('draftAsesmenSumatif').value
+            };
+
+            if(formData.profil.length === 0) formData.profil = ["Keimanan & Ketakwaan"];
+            if(formData.sarpras.length === 0) formData.sarpras = ["Papan Tulis"];
+
+            showLoading(true);
+
+            try {
+                document.getElementById('loadingText').innerHTML = "Claude AI sedang menyusun RPM...<br>Estimasi: 10-30 detik. Mohon tunggu.";
+                let aiResponse = null;
+                try {
+                    aiResponse = await Promise.race([
+                        generateContentWithClaude(formData),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 90000))
+                    ]);
+                } catch(err) {
+                    console.warn("Claude AI gagal, fallback ke template:", err.message);
+                    document.getElementById('loadingText').innerHTML = "Menyiapkan template offline...";
+                    await new Promise(r => setTimeout(r, 600));
+                    aiResponse = generateContentWithTemplate(formData);
+                }
+                renderRPM(formData, aiResponse);
+                showLoading(false);
+            } catch (renderError) {
+                console.error("Render error:", renderError);
+                const aiResponse = generateContentWithTemplate(formData);
+                renderRPM(formData, aiResponse);
+                showLoading(false);
+            }
+        });
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if(show) {
+                overlay.classList.remove('hidden');
+                document.getElementById('print-area').innerHTML = '';
+            } else {
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // ========== GENERATOR AI: CLAUDE (Anthropic) — Tanpa API Key dari pengguna ==========
+        async function generateContentWithClaude(data) {
+            // Bangun konteks kerangka pembelajaran dari input guru
+            let pmmText = "";
+            if (data.indikatorKinerja && data.fokusPerilaku.length > 0) {
+                pmmText = `Fokus PMM: "${data.indikatorKinerja}" (${data.fokusPerilaku.join(', ')}). Sisipkan tag <b>[Fokus PMM]</b> di tahap relevan langkah_inti.`;
+            }
+
+            // ===== BANGUN KONTEKS KERANGKA PEMBELAJARAN =====
+            // Jika diisi guru → jadikan ACUAN WAJIB; jika kosong → AI generate sesuai konteks mapel/topik/model
+            const buildKerangka = (label, val, fallbackHint) => {
+                if (val && val.trim()) {
+                    return `\n- ${label} [ACUAN GURU — WAJIB DIKEMBANGKAN]: "${val.trim()}"`;
+                } else {
+                    return `\n- ${label} [KOSONG — generate sesuai konteks ${fallbackHint}]`;
+                }
+            };
+
+            // Susun deskripsi Ruang Murid (gabungan jenis konten + detail)
+            const ruangMuridDesc = (() => {
+                const jenis = (data.jenisRuangMurid || []).join(', ');
+                const detail = (data.ruangMurid || '').trim();
+                if (!jenis && !detail) return '';
+                if (jenis && detail) return `${jenis} (${detail})`;
+                return jenis || detail;
+            })();
+
+            let kerangkaBlock = "\n\n=== KERANGKA PEMBELAJARAN ===";
+            kerangkaBlock += buildKerangka("Lintas Disiplin", data.lintasDisiplin, `mapel ${data.mapel}, topik ${data.topik}`);
+            kerangkaBlock += buildKerangka("Praktik Pedagogis", data.praktikPedagogis, `model ${data.model}, pendekatan ${data.pendekatan}`);
+            kerangkaBlock += buildKerangka("Kemitraan Pembelajaran", data.kemitraan, `konteks sekolah dan topik ${data.topik}`);
+            kerangkaBlock += buildKerangka("Lingkungan Pembelajaran", data.lingkungan, `${data.kelas}, model ${data.model}`);
+            kerangkaBlock += buildKerangka("Pemanfaatan Digital", data.pemanfaatanDigital, `sarpras: ${data.sarpras.join(', ')}`);
+            kerangkaBlock += buildKerangka("Buku Paket / Sumber Bacaan Utama", data.bukuPaket, `tidak ada buku spesifik, gunakan referensi umum`);
+            kerangkaBlock += buildKerangka("Pemanfaatan Konten Ruang Murid", ruangMuridDesc, `tidak dipakai jika kosong`);
+            kerangkaBlock += "\n=== END KERANGKA ===";
+
+            // ===== BANGUN DRAFT IDE GURU =====
+            // Jika diisi → WAJIB jadi acuan utama pengembangan; jika kosong → AI generate mandiri sesuai konteks di atas
+            const buildDraft = (label, val, fallbackHint) => {
+                if (val && val.trim()) {
+                    return `\n- ${label} [IDE GURU — KEMBANGKAN MENJADI NARASI OPERASIONAL LENGKAP]: "${val.trim()}"`;
+                } else {
+                    return `\n- ${label} [KOSONG — generate mandiri sesuai ${fallbackHint}]`;
+                }
+            };
+
+            let draftBlock = "\n\n=== DRAFT IDE GURU ===";
+            draftBlock += buildDraft("Pendahuluan", data.draftPendahuluan, `model ${data.model}, topik ${data.topik}, kelas ${data.kelas}`);
+            draftBlock += buildDraft("Kegiatan Inti", data.draftInti, `sintaks ${data.model}, metode ${data.metode}, topik ${data.topik}`);
+            draftBlock += buildDraft("Penutup", data.draftPenutup, `konteks pembelajaran ${data.topik}`);
+            draftBlock += buildDraft("Asesmen Awal", data.draftAsesmenAwal, `topik ${data.topik}, kelas ${data.kelas}`);
+            draftBlock += buildDraft("Asesmen Formatif", data.draftAsesmenFormatif, `model ${data.model}, produk: ${data.targetProduk || '-'}`);
+            draftBlock += buildDraft("Asesmen Sumatif", data.draftAsesmenSumatif, `TP: ${data.tp}`);
+            draftBlock += "\n=== END DRAFT ===";
+
+            const pilihanPengalaman = data.pengalamanBelajar || [];
+            const mendalamAktif = data.pendekatanMendalam.join(', ') || '-';
+            const instrMemahami = `[PERSPEKTIF MURID — aspek MEMAHAMI konsep ${data.topik}, BUKAN duplikat langkah_inti. Pakai kalimat 'murid membangun pemahaman...', 'murid menemukan...', 'murid mengkonstruksi...']`;
+            const instrMengaplikasi = `[PERSPEKTIF MURID — aspek transfer/MENGAPLIKASI ke konteks baru, BUKAN duplikat. Pakai kalimat 'murid menerapkan...', 'murid mentransfer...', 'murid menyelesaikan masalah nyata...']`;
+            const instrMerefleksi = `[PERSPEKTIF MURID — aspek METAKOGNITIF, BUKAN duplikat. Pakai kalimat 'murid menyadari...', 'murid mengevaluasi cara berpikirnya...', 'murid menemukan keterhubungan...']`;
+            const jenjangInfo = JENJANG_INFO[data.jenjang] || JENJANG_INFO.SMA;
+            const prompt = `Anda Ahli Kurikulum Merdeka 2025 Indonesia & pakar Pembelajaran Mendalam (Deep Learning) untuk jenjang ${data.jenjang || 'SMA'}.
+Susun RPM lengkap, OPERASIONAL, kontekstual, dan berfondasi filosofi Pembelajaran Mendalam.
+
+=== IDENTITAS PEMBELAJARAN ===
+- Sekolah: ${data.sekolah || '(tidak disebut)'}
+- Mata Pelajaran: ${data.mapel}
+- Elemen / Domain: ${data.elemen || '(tidak disebut)'}
+- Topik / Sub Materi: ${data.topik}
+- Fase / Kelas: ${data.kelas}
+- Semester: ${data.semester || '-'} | Tahun Ajaran: ${data.tahun || '-'}
+- Alokasi Waktu: ${data.waktu || '-'}
+
+=== KARAKTERISTIK PESERTA DIDIK ===
+- Target Peserta Didik: ${data.target || 'Reguler/Tipikal'}
+- Sarana & Prasarana Tersedia: ${data.sarpras.join(', ') || 'standar kelas'}
+
+=== TUJUAN & KOMPETENSI ===
+- Capaian Pembelajaran (CP): ${data.cp}
+- Tujuan Pembelajaran (TP): ${data.tp}
+- Dimensi Profil Lulusan (WAJIB MUNCUL DI RUBRIK & OBSERVASI): ${data.profil.join(', ')}
+
+=== PENDEKATAN & MODEL ===
+- Pendekatan Pembelajaran: ${data.pendekatan}
+- Model Pembelajaran: ${data.model}
+- Metode: ${data.metode || '-'}
+- Target Produk Belajar: ${data.targetProduk || '(belum disebut spesifik)'}
+- Jenjang: ${data.jenjang || 'SMA'} (${jenjangInfo.gaya}). Peserta didik pada tahap ${jenjangInfo.tahapKognitif}. Seluruh bahasa, contoh, durasi, dan tingkat kesulitan asesmen WAJIB disesuaikan dengan jenjang ini.
+- Prinsip Pembelajaran Mendalam yang Diterapkan: ${data.pendekatanMendalam.join(', ')}${pmmText ? '\n\n=== FOKUS PMM (PENGELOLAAN KINERJA GURU) ===\n- ' + pmmText : ''}${kerangkaBlock}${draftBlock}
+
+=== FILOSOFI PEMBELAJARAN MENDALAM (WAJIB DIINTEGRASIKAN) ===
+Pembelajaran Mendalam (Deep Learning) bukan sekadar metode — ini adalah orientasi pembelajaran yang mengutamakan:
+
+(A) BERMAKNA — peserta didik membangun keterhubungan antara materi dengan pengalaman, kepentingan, dan konteks hidupnya. Bukan sekadar hafal, tetapi paham mengapa materi penting bagi dirinya.
+
+(B) BERKESADARAN — peserta didik aktif menyadari proses belajarnya sendiri (metakognisi): apa yang sudah dipahami, apa yang belum, dan bagaimana cara memperdalamnya. Guru memfasilitasi refleksi metakognitif berkelanjutan.
+
+(C) MENGGEMBIRAKAN — pembelajaran membangkitkan rasa ingin tahu, keterlibatan emosional positif, dan kepuasan intelektual. Bukan menyenangkan dangkal (entertainment), tetapi engagement bermutu yang mendorong eksplorasi mendalam.
+
+PRINSIP TURUNAN YANG WAJIB MUNCUL:
+1. Pengalaman belajar 3-dimensi: MEMAHAMI (membangun konsep) → MENGAPLIKASI (transfer ke konteks baru) → MEREFLEKSI (kesadaran metakognitif).
+2. Lintas-disiplin: koneksikan topik dengan disiplin ilmu lain dan kehidupan nyata.
+3. Kemitraan: libatkan orang tua, komunitas, atau lingkungan sebagai mitra belajar bila relevan.
+4. Diferensiasi: akomodasi keragaman peserta didik (kesiapan, minat, profil belajar).
+
+=== ATURAN KRITIS PENYUSUNAN ===
+1. ANALISIS CERDAS SETIAP FIELD: setiap data input harus tercermin dalam output. Jangan abaikan satupun.
+   - "Elemen" mengarahkan dimensi materi & alur konseptual.
+   - "Alokasi waktu" menentukan total durasi langkah (jumlahkan estimasi waktu agar pas).
+   - "Target peserta didik" (${data.target}) MENENTUKAN strategi diferensiasi konten/proses/produk.
+   - "Sarpras" jadi acuan media yang realistis dipakai (jangan menyebut alat yang tidak ada).
+   - "Topik" jadi konteks setiap contoh, soal, dan ilustrasi — JANGAN generik.
+
+2. KONSISTENSI MODEL: langkah_inti WAJIB mengikuti sintaks "${data.model}" secara presisi. Setiap tahap sintaks = 1 <li>.
+
+3. KERANGKA & DRAFT: jika DIISI guru → kembangkan jadi narasi operasional (instruksi konkret, durasi, dialog guru); JANGAN salin verbatim. Jika KOSONG → generate mandiri sesuai konteks pembelajaran.
+
+4. PETAKAN STRUKTUR IDE GURU: jika guru menyebut tahapan/stasiun (misalnya "stasiun 1 X, stasiun 2 Y"), buat <li> terpisah per tahap di langkah_inti.
+
+5. ASESMEN BERUPA KONTEN NYATA: jika guru minta soal, TULIS SOAL ASLI lengkap dengan stem, opsi, kunci, pembahasan. Jangan hanya mendeskripsikan "akan diberikan soal HOTS".
+
+6. SOAL PG (jika diminta): Jika asesmen sumatif guru menyebut "PG", "pilihan ganda", "Quizizz", atau "quiz" → field "soal_pg" wajib berisi soal PG ASLI sebanyak PERSIS jumlah yang disebutkan guru (jika guru tulis "2 soal PG" maka buat 2 soal, jika guru tulis "5 soal" buat 5 soal, jika tidak ada angka maka default 10 soal). Setiap soal: stem, opsi A-E tersusun ke bawah (bukan sejajar), kunci, pembahasan. Jika tidak diminta → field "soal_pg" diisi string kosong "".
+
+7. soal_latihan SELALU berisi 5 soal HOTS C4-C6 asli tentang "${data.topik}" yang BERBEDA dari soal_pg.
+
+8. PENGALAMAN BELAJAR — TIDAK BOLEH DUPLIKAT LANGKAH_INTI. HANYA DIMENSI YANG DIPILIH GURU: ${pilihanPengalaman.join(', ') || '(tidak ada dipilih: isi semua field pengalaman dengan string kosong)'}. Field dimensi yang TIDAK dipilih WAJIB berisi string kosong "". Setiap dimensi yang dipilih WAJIB mencerminkan prinsip terpilih (${mendalamAktif}): jika Berkesadaran -> murid menyadari tujuan, progres, dan cara berpikirnya; jika Bermakna -> murid menghubungkan konsep dengan pengalaman dan kehidupannya; jika Menggembirakan -> murid terlibat aktif, kolaboratif, dan penuh rasa ingin tahu. Jangan menyisipkan prinsip yang tidak dipilih.
+   - "pengalaman_memahami": dari PERSPEKTIF MURID, jelaskan bagaimana murid membangun pemahaman mendalam terhadap konsep ${data.topik} (apa yang murid rasakan/pikirkan saat memahami, bukan apa yang dilakukan guru).
+   - "pengalaman_mengaplikasi": dari PERSPEKTIF MURID, jelaskan bagaimana murid mentransfer pemahaman ke konteks baru/nyata.
+   - "pengalaman_merefleksi": dari PERSPEKTIF MURID, jelaskan dimensi metakognitif — bagaimana murid menyadari proses berpikirnya sendiri.
+   - JANGAN gunakan kata-kata yang sama dengan langkah_inti. Pakai bahasa pengalaman ("murid merasakan...", "murid menyadari...", "murid menemukan keterhubungan...").
+
+9. PRINSIP MENDALAM (field "prinsip_mendalam"): WAJIB tunjukkan secara konkret bagaimana ${data.pendekatanMendalam.join(', ')} terwujud dalam pembelajaran ini. Hubungkan dengan filosofi Bermakna/Berkesadaran/Menggembirakan di atas.
+
+10. Konteks Indonesia, bahasa formal pendidikan, hindari jargon kosong.
+
+=== STRUKTUR JSON OUTPUT (BALAS HANYA JSON, TANPA MARKDOWN) ===
+{
+"identifikasi_pd":"Analisis kesiapan ${data.target.toLowerCase()} di ${data.kelas} terkait topik ${data.topik}. 3-4 kalimat konkret tentang pengetahuan awal, minat, dan kebutuhan belajar mereka.",
+"karakteristik_materi":"Analisis materi ${data.topik} dalam elemen ${data.elemen || data.mapel}: jenis pengetahuan dominan, tingkat kesulitan, struktur konseptual, dan integrasi nilai/karakter.",
+"materi_faktual":"Fakta-fakta kunci tentang ${data.topik} yang harus dikuasai murid.",
+"materi_konseptual":"Konsep-konsep utama dan generalisasi pada ${data.topik}.",
+"materi_prosedural":"Langkah/prosedur/keterampilan yang harus dikuasai murid.",
+"materi_metakognitif":"Refleksi cara berpikir tentang ${data.topik} — strategi pemecahan masalah dan kesadaran proses belajar.",
+"profil_deskripsi":"Bagaimana ${data.profil.join(', ')} dikembangkan secara konkret dalam pembelajaran ini (sebut perilaku spesifik tiap dimensi).",
+"pendekatan_mendalam_desc":"Narasi 4-5 kalimat menjelaskan bagaimana pendekatan ${data.pendekatan} dipadu dengan model ${data.model} mewujudkan filosofi Pembelajaran Mendalam (Bermakna, Berkesadaran, Menggembirakan).",
+"topik_kontekstual":"Mengapa ${data.topik} relevan dengan kehidupan peserta didik ${data.kelas} di Indonesia hari ini. Sebut 2-3 contoh konkret.",
+"lintas_disiplin":"Koneksi ${data.topik} dengan disiplin ilmu lain (sebut 2-3 mapel terkait beserta sudut pandangnya).",
+"kerangka_pedagogis":"Praktik pedagogis konkret yang dipakai (kembangkan dari input guru atau generate sesuai model ${data.model}).",
+"kerangka_kemitraan":"Mitra belajar yang dilibatkan (orang tua, komunitas, narasumber, dll) beserta peran spesifiknya.",
+"kerangka_lingkungan":"Penataan lingkungan fisik, sosial, dan virtual untuk mendukung pembelajaran mendalam.",
+"kerangka_digital":"Narasi terintegrasi tentang pemanfaatan teknologi digital. WAJIB sebutkan dalam paragraf yang sama: (1) tools/platform digital yang dipakai (${data.pemanfaatanDigital || 'tools default seperti Quizizz/Canva'}), (2) jika ada PID di sarpras (${data.sarpras.join(', ')}), jelaskan PID = Papan Interaktif Digital (papan tulis digital yang bisa disentuh untuk menulis dan menjalankan media — BUKAN platform online), (3) jika ada konten Ruang Murid (${ruangMuridDesc || 'tidak dipilih'}), sebutkan jenisnya dan peran konten dalam pembelajaran (catatan: 'Gim Edukasi' adalah permainan interaktif edukatif untuk pembelajaran sambil bermain), (4) jika ada konten dari luar Ruang Murid (${data.kontenLuarRM || 'tidak ada'}), sebutkan dan integrasikan dalam narasi. Jadikan satu paragraf naratif yang menjelaskan keterpaduan semua sarana digital terhadap topik ${data.topik}.",
+"dif_konten":"Strategi diferensiasi konten yang DISESUAIKAN dengan target ${data.target}. Sebut konkret apa yang berbeda untuk murid kemampuan tinggi/sedang/rendah.",
+"dif_proses":"Strategi diferensiasi proses untuk ${data.target}. Sebut variasi cara murid mengakses pembelajaran.",
+"dif_produk":"Variasi produk yang bisa murid pilih (sesuai target ${data.targetProduk || 'fleksibel'} dan kemampuan ${data.target}).",
+"prinsip_mendalam":"Tunjukkan SECARA KONKRET bagaimana ${data.pendekatanMendalam.join(' + ')} terwujud dalam aktivitas pembelajaran ini. Hubungkan dengan filosofi Deep Learning. 4-5 kalimat substantif.",
+"pengalaman_memahami":"${pilihanPengalaman.includes('Memahami') ? instrMemahami : ''}",
+"pengalaman_mengaplikasi":"${pilihanPengalaman.includes('Mengaplikasi') ? instrMengaplikasi : ''}",
+"pengalaman_merefleksi":"${pilihanPengalaman.includes('Merefleksi') ? instrMerefleksi : ''}",
+"langkah_pendahuluan":"<ol><li>...</li></ol> 7-8 langkah dengan durasi (total maksimal 15-20% dari ${data.waktu || '2 JP'}) & dialog guru. WAJIB: (1) Setiap poin memiliki narasi operasional yang UNIK dan tidak ada pengulangan kata/kalimat antarpoin. (2) Urutan: Pembukaan & Salam → Doa Bersama → Presensi → Pengecekan Kerapihan & Kebersihan → Asesmen Awal/Pertanyaan Pemantik → Apersepsi → Penyampaian Tujuan Pembelajaran → Penyampaian Model & Metode (Station Rotation). (3) Tambahkan narasi konkret + contoh dialog guru di setiap poin. (4) Tandai [Fokus PMM] sesuai indikator kinerja yang dipilih.",
+"langkah_inti":"<ol><li>...</li></ol> SESUAI SINTAKS ${data.model} secara presisi. Tiap <li> mulai dengan <b>nama tahap sintaks (durasi)</b> lalu narasi 3-5 kalimat instruksi konkret memakai metode ${data.metode}. WAJIB integrasikan SEMUA sumber & sarana yang guru pilih di tahap yang relevan: (1) Sarana digital ${data.sarpras.join(', ') || '-'} dan Pemanfaatan Digital ${data.pemanfaatanDigital || '-'} — sebutkan eksplisit nama tool. CATATAN PENTING: PID = Papan Interaktif Digital (papan tulis digital yang bisa disentuh untuk menulis/menjalankan media — BUKAN platform online), MPI = Media Pembelajaran Interaktif (file/aplikasi multimedia yang ditampilkan di layar). (2) Buku Paket ${data.bukuPaket || '-'} — bila ada, sebutkan eksplisit halaman/bab yang dibaca peserta didik. (3) Konten Ruang Murid ${ruangMuridDesc || '-'} — bila ada, sebutkan jenisnya (Modul Ajar/Video/MPI/Bank Soal/dll) dan kapan digunakan dalam alur. Total durasi inti ~60-70% dari ${data.waktu || '2 JP'}.",
+"langkah_penutup":"<ol><li>...</li></ol> 4-5 langkah dengan durasi (total ~15-20% dari ${data.waktu || '2 JP'}). WAJIB: (1) Akhiri dengan langkah <b>Doa Penutup & Salam</b>. (2) Sebelum doa, sertakan langkah Menyimpulkan Materi → Refleksi → Tindak Lanjut. (3) Setiap langkah memiliki narasi operasional yang UNIK tanpa pengulangan.",
+"asesmen_awal":"Buat 3-5 pertanyaan asesmen awal asli tentang ${data.topik} untuk memetakan kesiapan ${data.target}.",
+"asesmen_formatif":"Teknik formatif konkret SAAT proses pembelajaran berlangsung, dengan kriteria yang sejalan dengan profil lulusan ${data.profil.join(', ')}.",
+"asesmen_sumatif":"Deskripsikan bentuk asesmen akhir secara singkat (jika PG, sebutkan jumlah soal dan platform). Soal lengkapnya ada di Lampiran.",
+"soal_pg":"Jika asesmen sumatif minta PG: buat PERSIS jumlah soal yang disebutkan guru (default 10 jika tidak disebutkan). Format setiap soal menggunakan tag <ol> dengan <li> — JANGAN tulis nomor angka di dalam <li> karena akan menyebabkan penomoran ganda. Format: <ol style='padding-left:20px;'><li style='margin-bottom:22px;'><div style='margin-bottom:8px;'>[stem soal kontekstual ${data.topik}]</div><div style='margin-left:10px;line-height:1.7;'><div>A. [Opsi A]</div><div>B. [Opsi B]</div><div>C. [Opsi C]</div><div>D. [Opsi D]</div><div>E. [Opsi E]</div></div><div style='margin-top:8px;padding:6px 10px;background-color:#f0f9ff;border-left:3px solid #0284c7;'><div><b>Jawaban: [huruf]</b></div><div style='margin-top:4px;'><b>Pembahasan:</b> <i>[Jelaskan mengapa jawaban benar dan mengapa opsi lain salah, kaitkan dengan konsep ${data.topik}]</i></div></div></li>...</ol>. Opsi WAJIB tersusun ke bawah, pembahasan WAJIB substantif (bukan satu kalimat). Jika tidak diminta PG: isi string kosong.",
+"lkpd_konten":"LKPD operasional sesuai ${data.model} dengan kolom isian, panduan kerja kelompok, dan cermin diferensiasi untuk ${data.target}.",
+"lembar_observasi":"<table border='1' style='width:100%;border-collapse:collapse'>...</table> kolom = ${data.profil.join(', ')}, baris = nama peserta didik, indikator perilaku spesifik per dimensi.",
+"rubrik_penilaian":"<table border='1' style='width:100%;border-collapse:collapse'>...</table> WAJIB sertakan SEMUA Dimensi Profil Lulusan sebagai baris: ${data.profil.join(', ')}. Kolom = 4 level (Sangat Baik, Baik, Cukup, Perlu Bimbingan) dengan deskriptor konkret.",
+"lembar_refleksi":"<ul> 5 pertanyaan refleksi metakognitif tentang ${data.topik} (pakai kata-kata 'apa yang kamu pahami', 'bagian mana yang sulit', 'bagaimana cara kamu belajar', dll).",
+"soal_latihan":"<ol> 5 soal HOTS C4-C6 ASLI tentang ${data.topik} dengan opsi A-E, kunci, pembahasan singkat.",
+"daftar_pustaka":"<ul> 4-5 referensi APA yang RELEVAN dengan ${data.mapel} ${data.kelas} dan topik ${data.topik}."
+}`;
+
+            const response = await fetch("https://api.anthropic.com/v1/messages", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "anthropic-dangerous-direct-browser-access": "true"
+                },
+                body: JSON.stringify({
+                    model: "claude-sonnet-4-20250514",
+                    max_tokens: 8000,
+                    messages: [{ role: "user", content: prompt }]
+                })
+            });
+
+            if (!response.ok) {
+                const errBody = await response.json().catch(() => ({}));
+                throw new Error(`Claude API error: ${errBody?.error?.message || response.status}`);
+            }
+
+            const result = await response.json();
+            const text = result?.content?.[0]?.text || '';
+            if (!text) throw new Error("Respons Claude kosong");
+
+            let cleaned = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+            const firstBrace = cleaned.indexOf('{');
+            const lastBrace = cleaned.lastIndexOf('}');
+            if (firstBrace === -1 || lastBrace === -1) throw new Error("JSON tidak ditemukan di respons Claude");
+            const jsonStr = cleaned.substring(firstBrace, lastBrace + 1);
+
+            let parsed;
+            try {
+                parsed = JSON.parse(jsonStr);
+            } catch (e) {
+                const recovered = jsonStr.replace(/,(\s*[}\]])/g, '$1');
+                parsed = JSON.parse(recovered);
+            }
+
+            const schemaKeys = [
+                "identifikasi_pd","karakteristik_materi","materi_faktual","materi_konseptual","materi_prosedural","materi_metakognitif",
+                "profil_deskripsi","pendekatan_mendalam_desc","topik_kontekstual","lintas_disiplin",
+                "kerangka_pedagogis","kerangka_kemitraan","kerangka_lingkungan","kerangka_digital","kerangka_ruang_murid",
+                "dif_konten","dif_proses","dif_produk","prinsip_mendalam","pengalaman_memahami","pengalaman_mengaplikasi","pengalaman_merefleksi",
+                "langkah_pendahuluan","langkah_inti","langkah_penutup",
+                "asesmen_awal","asesmen_formatif","asesmen_sumatif",
+                "lkpd_konten","lembar_observasi","rubrik_penilaian","lembar_refleksi","soal_pg","soal_latihan","daftar_pustaka"
+            ];
+
+            // Validasi field utama
+            const fieldUtama = ['langkah_inti', 'langkah_pendahuluan', 'langkah_penutup'];
+            for (const key of fieldUtama) {
+                if (!parsed[key] || typeof parsed[key] !== 'string' || parsed[key].trim().length < 20) {
+                    throw new Error(`Field ${key} tidak lengkap`);
+                }
+            }
+            // soal_pg boleh kosong string (tidak ada permintaan PG)
+            if (parsed["soal_pg"] === undefined) parsed["soal_pg"] = "";
+            // Lengkapi field kosong (kecuali soal_pg yang boleh kosong string)
+            for (const key of schemaKeys) {
+                if (key === "soal_pg") continue;
+                if (!parsed[key] || typeof parsed[key] !== 'string' || parsed[key].trim().length < 5) {
+                    parsed[key] = '<i>(Bagian ini dapat Bapak/Ibu kembangkan sesuai kebutuhan kelas.)</i>';
+                }
+            }
+            console.log("✓ Berhasil generate RPM dengan Claude AI");
+            return parsed;
+        }
+
+
+        // ========== GENERATOR 2: TEMPLATE CERDAS OFFLINE (Selalu Berhasil) ==========
+        function generateContentWithTemplate(d) {
+            const topik = d.topik || "Materi";
+            const mapel = d.mapel || "Mata Pelajaran";
+            const kelas = d.kelas || "Fase E";
+            const infoJenjangT = JENJANG_INFO[d.jenjang] || JENJANG_INFO.SMA;
+            const model = d.model || "PjBL";
+            const tp = d.tp || `Peserta didik mampu memahami konsep ${topik}`;
+            const profilStr = d.profil.join(', ');
+            const mendalamStr = d.pendekatanMendalam.join(', ');
+
+            // PMM Integration
+            const pmmTag = (d.indikatorKinerja && d.fokusPerilaku.length > 0)
+                ? ` <b>[Fokus PMM: ${d.indikatorKinerja}]</b>`
+                : '';
+
+            // Sintaks model pembelajaran (mapping cerdas dengan dialog guru, aktivitas murid, estimasi waktu)
+            const sintaks = {
+                "Project Based Learning (PjBL)": [
+                    `<b>Penentuan Pertanyaan Mendasar (±10 menit).</b> Guru menayangkan video/gambar/berita tentang <b>${topik}</b>, lalu bertanya: <i>"Mengapa hal ini penting bagi kita?"</i> dan <i>"Proyek seperti apa yang bisa kita buat untuk mengatasi/menjelaskan ${topik}?"</i> Peserta didik menyampaikan pendapat awal secara lisan.`,
+                    `<b>Mendesain Perencanaan Proyek (±15 menit).</b> Peserta didik dibagi ke dalam kelompok 4-5 orang. Setiap kelompok merancang proyek <i>${d.targetProduk || 'poster/video/produk'}</i> dengan menentukan: (1) tujuan proyek, (2) pembagian tugas, (3) alat/bahan yang dibutuhkan. Guru memberi contoh proyek sukses sebagai inspirasi.`,
+                    `<b>Menyusun Jadwal Proyek (±5 menit).</b> Setiap kelompok mengisi <i>tabel timeline</i> di LKPD: kapan mengumpulkan data, kapan menyusun draft, kapan presentasi. Guru menetapkan deadline produk akhir dan menyepakati aturan kolaborasi.`,
+                    `<b>Pelaksanaan & Monitoring Proyek (±25 menit).</b> Peserta didik mengerjakan proyek sambil mencatat progres di lembar monitoring. Guru berkeliling ke setiap kelompok, mengajukan pertanyaan pemandu seperti: <i>"Sumber apa yang sudah kalian temukan?"</i>, <i>"Kesulitan apa yang dihadapi?"</i>, dan memberi umpan balik langsung.`,
+                    `<b>Pengujian & Presentasi Hasil Proyek (±20 menit).</b> Setiap kelompok mempresentasikan hasil proyek selama 3-5 menit. Kelompok lain memberi tanggapan/pertanyaan menggunakan teknik <i>"2 bintang 1 saran"</i> (2 hal yang baik, 1 saran perbaikan).`,
+                    `<b>Evaluasi Pengalaman & Hasil Proyek (±10 menit).</b> Guru memandu refleksi terbuka: <i>"Apa hal terpenting yang kalian pelajari dari proyek ini?"</i>, <i>"Jika diulang, apa yang akan kalian lakukan berbeda?"</i> Peserta didik menulis 3 poin pembelajaran utama di sticky notes.`
+                ],
+                "Problem Based Learning (PBL)": [
+                    `<b>Orientasi pada Masalah Autentik (±10 menit).</b> Guru menyajikan masalah nyata terkait <b>${topik}</b> dalam bentuk artikel singkat/video/studi kasus. Contoh kalimat pemantik: <i>"Bayangkan kalian dihadapkan pada situasi ini... Apa yang kalian pikirkan?"</i> Peserta didik mengidentifikasi inti masalah secara berpasangan.`,
+                    `<b>Mengorganisasi Belajar (±10 menit).</b> Peserta didik dibagi dalam kelompok 4-5 orang. Setiap kelompok menulis di kertas plano: (1) Apa yang sudah kami ketahui? (2) Apa yang perlu kami cari tahu? (3) Bagaimana cara mencarinya? Guru memandu menyepakati pembagian tugas.`,
+                    `<b>Membimbing Penyelidikan (±25 menit).</b> Peserta didik mencari informasi dari sumber yang sudah disiapkan guru (buku, artikel, video, narasumber). Guru berkeliling memandu dengan pertanyaan: <i>"Mengapa kalian memilih sumber itu?"</i>, <i>"Adakah sudut pandang lain?"</i>`,
+                    `<b>Mengembangkan & Menyajikan Hasil Karya (±25 menit).</b> Setiap kelompok menyusun solusi/jawaban dalam bentuk <i>${d.targetProduk || 'mind map/laporan singkat/poster'}</i>, kemudian mempresentasikan selama 3-5 menit. Audien membuat catatan poin penting di buku tulis.`,
+                    `<b>Analisis & Evaluasi Proses Pemecahan Masalah (±15 menit).</b> Guru memimpin diskusi pleno: <i>"Solusi mana yang paling masuk akal? Mengapa?"</i>, <i>"Apa konsep penting yang kalian temukan?"</i> Peserta didik menuliskan kesimpulan akhir di buku catatan pribadi.`
+                ],
+                "Inquiry Learning": [
+                    `<b>Menyajikan Fenomena/Pertanyaan Pemantik (±10 menit).</b> Guru menampilkan demonstrasi/foto/video fenomena terkait <b>${topik}</b>, lalu bertanya: <i>"Apa yang kalian amati? Mengapa hal ini bisa terjadi?"</i> Peserta didik mencatat pengamatan & pertanyaan awal di LKPD.`,
+                    `<b>Merumuskan Masalah & Hipotesis (±10 menit).</b> Setiap kelompok menuliskan 1 rumusan masalah berbentuk pertanyaan (contoh: <i>"Apakah X mempengaruhi Y?"</i>) dan 1 hipotesis sementara berdasarkan pengetahuan awal mereka.`,
+                    `<b>Mengumpulkan Data melalui Investigasi (±25 menit).</b> Peserta didik melakukan eksperimen/observasi/wawancara/studi pustaka sesuai panduan LKPD. Guru memantau ketelitian pencatatan data: <i>"Sudah lengkap datanya? Sudah dicek ulang?"</i>`,
+                    `<b>Menganalisis Data & Menguji Hipotesis (±20 menit).</b> Kelompok membandingkan data dengan hipotesis awal. Guru memandu dengan pertanyaan: <i>"Apakah hasil sesuai prediksi? Apa kemungkinan penyebab perbedaan?"</i> Peserta didik membuat tabel/grafik analisis di LKPD.`,
+                    `<b>Membuat Kesimpulan & Generalisasi (±15 menit).</b> Setiap kelompok merumuskan kesimpulan dalam 1-2 kalimat yang menjawab rumusan masalah, lalu mempresentasikannya. Guru memberi penguatan konsep ilmiah yang benar bila ada miskonsepsi.`
+                ],
+                "Discovery Learning": [
+                    `<b>Stimulation/Pemberian Rangsangan (±10 menit).</b> Guru menyajikan stimulus berupa gambar/video/cerita/teka-teki tentang <b>${topik}</b> tanpa menjelaskan apa pun. Contoh: <i>"Coba perhatikan gambar ini... Apa yang aneh atau menarik?"</i> Peserta didik bebas berkomentar.`,
+                    `<b>Problem Statement/Identifikasi Masalah (±10 menit).</b> Guru memandu peserta didik merumuskan pertanyaan/masalah dari stimulus tadi. Setiap peserta menulis minimal 2 pertanyaan di sticky notes, kemudian ditempel di papan untuk dikelompokkan.`,
+                    `<b>Data Collection/Pengumpulan Data (±20 menit).</b> Peserta didik berkelompok mencari informasi dari sumber: buku teks, internet, lingkungan sekitar, atau wawancara. Guru menyiapkan minimal 3 sumber rujukan agar pencarian terarah.`,
+                    `<b>Data Processing/Pengolahan Data (±15 menit).</b> Setiap kelompok mengelompokkan informasi yang ditemukan ke dalam tabel/diagram/peta konsep. Guru bertanya: <i>"Pola apa yang kalian temukan dari data ini?"</i>`,
+                    `<b>Verification/Pembuktian (±15 menit).</b> Kelompok membandingkan temuan mereka dengan teori/konsep di buku teks atau penjelasan guru. <i>"Apakah temuan kalian sesuai dengan yang ada di buku? Bagian mana yang sama, mana yang berbeda?"</i>`,
+                    `<b>Generalization/Menarik Kesimpulan (±10 menit).</b> Setiap kelompok menulis kesimpulan umum tentang <b>${topik}</b> dalam 2-3 kalimat. Guru memberikan penguatan dan menghubungkan dengan konteks lain.`
+                ],
+                "Cooperative Learning": [
+                    `<b>Menyampaikan Tujuan & Memotivasi (±5 menit).</b> Guru menjelaskan tujuan pembelajaran <b>${topik}</b> dengan bahasa yang dapat dipahami peserta didik. Memberi cerita motivasi singkat tentang manfaat bekerja sama.`,
+                    `<b>Menyajikan Informasi (±15 menit).</b> Guru memberikan informasi awal tentang <b>${topik}</b> melalui ceramah singkat berbantuan slide/video (maksimal 10 menit), lalu peserta didik mencatat poin penting.`,
+                    `<b>Mengorganisasi Kelompok Belajar (±5 menit).</b> Guru membagi peserta didik dalam kelompok heterogen 4-5 orang (campuran kemampuan tinggi, sedang, rendah). Setiap anggota diberi peran: ketua, notulis, juru bicara, anggota.`,
+                    `<b>Membimbing Kerja Kelompok (±25 menit).</b> Setiap kelompok mengerjakan tugas di LKPD dengan teknik <i>"think-pair-share"</i> atau <i>"jigsaw"</i>. Guru berkeliling membimbing kelompok yang kesulitan tanpa langsung memberi jawaban.`,
+                    `<b>Evaluasi Hasil Belajar (±15 menit).</b> Setiap kelompok menyajikan hasil melalui presentasi singkat 2-3 menit. Guru memberi kuis singkat (3-5 soal) untuk memastikan setiap peserta didik memahami materi.`,
+                    `<b>Memberikan Penghargaan (±5 menit).</b> Guru memberikan apresiasi kepada kelompok terbaik dan kelompok yang menunjukkan peningkatan kerja sama. Bentuknya bisa pujian, tepuk tangan, atau bintang prestasi.`
+                ],
+                "Blended Learning - Station Rotation": [
+                    `<b>Persiapan Stasiun & Pembagian Kelompok (±10 menit).</b> Guru menjelaskan konsep rotasi stasiun: kelas dibagi ke dalam <b>3 stasiun belajar</b> dengan aktivitas berbeda terkait <b>${topik}</b>, salah satunya berbasis teknologi/digital. Peserta didik dibagi ke dalam 3 kelompok heterogen, masing-masing memulai dari stasiun berbeda. Guru menyampaikan instruksi tertulis/visual yang sudah disiapkan di setiap stasiun, serta mengingatkan durasi rotasi (±15 menit per stasiun).`,
+                    `<b>Stasiun 1 — Belajar dengan Guru/Tatap Muka (±15 menit).</b> Kelompok di stasiun ini berdiskusi langsung dengan guru tentang konsep inti <b>${topik}</b>. Guru menjelaskan, bertanya pemantik (<i>"Apa yang kalian pahami dari ${topik.toLowerCase()}?"</i>), dan menjawab kebingungan peserta didik. Aktivitas kolaboratif: tanya jawab terbimbing dan curah pendapat.`,
+                    `<b>Stasiun 2 — Belajar Mandiri Berbasis Digital (±15 menit).</b> Kelompok di stasiun ini menggunakan perangkat digital (laptop/tablet/HP) untuk: (1) menonton video pembelajaran tentang <b>${topik}</b> di YouTube/Rumah Belajar, (2) mengerjakan kuis interaktif (Quizizz/Kahoot), atau (3) membaca artikel digital. Peserta didik mencatat poin penting di LKPD.`,
+                    `<b>Stasiun 3 — Belajar Kolaboratif/Praktik (±15 menit).</b> Kelompok di stasiun ini bekerja sama menyelesaikan tugas hands-on terkait <b>${topik}</b>: membuat mind map di kertas plano, menyusun puzzle konsep, atau menyelesaikan studi kasus tertulis. Tidak menggunakan perangkat digital — fokus pada interaksi antar teman.`,
+                    `<b>Rotasi Antar Stasiun.</b> Setelah ±15 menit di setiap stasiun, guru memberi aba-aba (lonceng/musik singkat) sebagai tanda rotasi. Setiap kelompok berpindah searah jarum jam ke stasiun berikutnya hingga semua kelompok melewati ketiga stasiun. Guru memantau ketepatan waktu dan ketertiban perpindahan.`,
+                    `<b>Konsolidasi & Diskusi Pleno (±15 menit).</b> Setelah seluruh kelompok menyelesaikan rotasi 3 stasiun, guru memimpin diskusi pleno: <i>"Apa hal terpenting yang kalian pelajari dari setiap stasiun?"</i>, <i>"Stasiun mana yang paling membantu pemahaman?"</i> Peserta didik membandingkan catatan dan menyimpulkan konsep utama <b>${topik}</b> bersama-sama.`
+                ],
+                "Blended Learning - Flipped Classroom": [
+                    `<b>Tahap Pra-Kelas: Belajar Mandiri di Rumah (sebelum hari H).</b> Guru sudah membagikan materi <b>${topik}</b> kepada peserta didik <b>1-2 hari sebelum tatap muka</b> melalui WhatsApp Group/Google Classroom: berupa video pembelajaran 5-10 menit, artikel singkat, atau slide presentasi. Peserta didik mempelajari materi secara mandiri di rumah dengan pendampingan orang tua. Guru menyertakan kuis singkat di Google Form/Quizizz untuk memastikan materi telah dipelajari (sebagai pengganti asesmen awal).`,
+                    `<b>Pengecekan Pemahaman Awal di Kelas (±10 menit).</b> Saat tatap muka, guru langsung mengecek pemahaman peserta didik dengan kuis singkat 3-5 pertanyaan (lisan/Quizizz/refleksi tertulis 1 menit). Contoh: <i>"Sebelum kita mulai, siapa yang masih bingung dengan bagian X di video kemarin?"</i> Hasil kuis dipakai sebagai dasar pengelompokan diferensiasi.`,
+                    `<b>Diskusi & Klarifikasi Konsep (±15 menit).</b> Guru memandu diskusi terbuka untuk menjawab kebingungan peserta didik. Konsep yang belum dipahami dijelaskan ulang dengan cara berbeda (analogi/demonstrasi/contoh kontekstual). Peserta didik diberi kesempatan bertanya bebas tanpa takut salah.`,
+                    `<b>Aktivitas Berbasis Diskusi & Pemecahan Masalah (±35 menit).</b> Inti waktu tatap muka digunakan untuk aktivitas yang TIDAK BISA dilakukan di rumah: (1) diskusi kelompok 4-5 orang membahas studi kasus tentang <b>${topik}</b>, (2) memecahkan persoalan kompleks bersama, (3) presentasi & debat antar kelompok, atau (4) praktek langsung. Guru berperan sebagai fasilitator yang berkeliling memberi umpan balik.`,
+                    `<b>Penguatan & Sintesis (±15 menit).</b> Setiap kelompok menyajikan hasil diskusi/pemecahan masalah selama 3-5 menit. Guru memberikan penguatan, meluruskan miskonsepsi, dan menghubungkan konsep <b>${topik}</b> dengan kehidupan nyata peserta didik. Kelas menyimpulkan poin pembelajaran utama bersama.`
+                ],
+                "Blended Learning - Lab Rotation": [
+                    `<b>Pembukaan & Briefing di Kelas Tatap Muka (±15 menit).</b> Pembelajaran dimulai di kelas reguler. Guru menyampaikan tujuan pembelajaran <b>${topik}</b>, memberikan apersepsi, dan menjelaskan instruksi serta daftar aktivitas yang akan dilakukan di laboratorium komputer. Guru memastikan peserta didik memahami: (1) apa yang harus dikerjakan, (2) berapa lama waktu di lab, (3) produk apa yang harus dihasilkan.`,
+                    `<b>Perpindahan ke Laboratorium Komputer (±5 menit).</b> Peserta didik berpindah dari kelas reguler ke laboratorium komputer secara tertib. Guru memastikan setiap peserta didik mendapat 1 perangkat komputer/laptop yang berfungsi serta koneksi internet stabil. Bila perangkat terbatas, peserta didik berpasangan 2 orang per komputer.`,
+                    `<b>Eksplorasi Belajar Mandiri Berbasis Digital (±35 menit).</b> Peserta didik melakukan aktivitas digital terstruktur sesuai daftar aktivitas: (1) menonton video pembelajaran <b>${topik}</b>, (2) mengerjakan latihan interaktif/simulasi online, (3) membaca artikel digital & menjawab pertanyaan, (4) membuat produk digital sederhana (Canva/Padlet/Google Slides). Guru berkeliling memberikan <b>bimbingan teknis</b>: membantu peserta didik yang kesulitan mengoperasikan perangkat atau navigasi situs.`,
+                    `<b>Pemantauan Progres oleh Guru (selama eksplorasi).</b> Guru memantau aktivitas peserta didik melalui: (1) berkeliling melihat layar masing-masing, (2) bertanya secara individu (<i>"Sudah sampai mana?"</i>, <i>"Ada bagian yang sulit?"</i>), atau (3) memantau dari dashboard guru jika menggunakan platform LMS (Google Classroom/Edmodo). Catat peserta didik yang membutuhkan bantuan ekstra.`,
+                    `<b>Kembali ke Kelas Tatap Muka untuk Refleksi (±15 menit).</b> Setelah waktu di laboratorium habis, peserta didik kembali ke kelas reguler. Guru memimpin diskusi refleksi: <i>"Apa yang kalian temukan dari aktivitas digital tadi?"</i>, <i>"Bagian mana yang paling menarik/sulit?"</i> Beberapa peserta didik berbagi hasil produk digitalnya. Guru memberikan penguatan konsep dan menyimpulkan pembelajaran.`
+                ]
+            };
+            const langkahInti = sintaks[model] || [
+                `<b>Eksplorasi Konsep Awal (±10 menit).</b> Guru menyampaikan apersepsi tentang <b>${topik}</b> dan mengaitkannya dengan pengalaman peserta didik. Bertanya: <i>"Apa yang sudah kalian ketahui tentang ${topik}?"</i>`,
+                `<b>Diskusi Kelompok Mengkaji Materi (±15 menit).</b> Peserta didik berkelompok 4-5 orang mengkaji bahan ajar yang disediakan guru, mencatat poin penting di lembar diskusi.`,
+                `<b>Investigasi & Pengumpulan Data (±20 menit).</b> Setiap kelompok mengumpulkan informasi dari minimal 2 sumber (buku, internet, wawancara). Guru memantau dan membimbing.`,
+                `<b>Analisis & Sintesis Temuan (±15 menit).</b> Kelompok mengolah data menjadi simpulan/peta konsep/tabel ringkasan. Guru bertanya: <i>"Apa pola yang kalian temukan?"</i>`,
+                `<b>Penyajian Hasil Belajar (±15 menit).</b> Setiap kelompok mempresentasikan hasil 3-5 menit. Audien memberi tanggapan dan pertanyaan kritis.`,
+                `<b>Refleksi & Penguatan Konsep (±10 menit).</b> Guru memberi penguatan konsep yang benar dan meluruskan miskonsepsi. Peserta didik mencatat kesimpulan akhir.`
+            ];
+
+            // ===== INTEGRASI CERDAS DRAFT GURU KE LANGKAH PEMBELAJARAN =====
+            // Jika guru mengisi draft, kembangkan menjadi konten operasional (bukan error box)
+
+            const langkahPendahuluanArr = [
+                `<b>Pembukaan & Salam (±3 menit).</b>${pmmTag} Guru memasuki kelas dengan penuh semangat, mengucapkan salam pembuka, dan menyapa peserta didik secara hangat. Contoh: <i>"Assalamu'alaikum/Selamat pagi semuanya! Apa kabar hari ini? Semoga kita semua siap belajar dengan penuh semangat ya."</i>`,
+                `<b>Doa Bersama (±2 menit).</b> Ketua kelas memimpin doa pembuka sebelum memulai kegiatan belajar. Guru mengingatkan agar berdoa dengan khusyuk agar ilmu yang dipelajari bermanfaat bagi diri sendiri dan orang lain.`,
+                `<b>Presensi Peserta Didik (±2 menit).</b> Guru mencatat kehadiran dengan memanggil nama satu per satu atau menggunakan teknik absensi kreatif (misalnya: menyebutkan 1 kata terkait topik saat namanya dipanggil). Peserta didik yang tidak hadir dicatat untuk tindak lanjut.`,
+                `<b>Pengecekan Kerapihan & Kebersihan Kelas (±2 menit).</b> Guru menginstruksikan peserta didik untuk memastikan meja, kursi, dan area sekitar sudah rapi serta bersih sebelum pembelajaran dimulai. Contoh: <i>"Sebelum kita mulai, pastikan bangku kalian rapi dan lantai di sekitar kalian bebas dari sampah."</i>`,
+                `<b>Asesmen Awal / Pertanyaan Pemantik (±2 menit).</b> Guru mengajukan 1-2 pertanyaan pemantik secara lisan untuk menggali pengetahuan awal peserta didik terkait <b>${topik}</b>. Contoh: <i>"Sebelum kita masuk materi hari ini, siapa yang sudah pernah mendengar tentang ${topik.toLowerCase()}? Apa yang kalian tahu?"</i> Jawaban dipetakan sebagai acuan diferensiasi pembelajaran.`,
+                `<b>Apersepsi (±2 menit).</b> Guru menghubungkan topik <b>${topik}</b> dengan materi sebelumnya atau pengalaman nyata peserta didik agar terbentuk jembatan kognitif. Contoh: <i>"Ingat materi kita minggu lalu? Nah, hari ini kita akan memperdalam kaitan topik tersebut dengan ${topik.toLowerCase()} yang sering kita jumpai dalam kehidupan sehari-hari."</i>`,
+                `<b>Penyampaian Tujuan Pembelajaran (±2 menit).</b> Guru memaparkan tujuan pembelajaran yang ingin dicapai hari ini: <i>"${tp}"</i> Guru juga menginformasikan model yang digunakan (<i>${model}</i>) dan teknik penilaian yang akan diterapkan (observasi sikap, LKPD, dan asesmen akhir).`,
+                `<b>Penyampaian Model & Metode Pembelajaran (±2 menit).</b> Guru menjelaskan alur kegiatan menggunakan model <b>${model}</b> dengan metode <b>${d.metode || 'diskusi dan tanya jawab'}</b> menggunakan <b>Station Rotation</b>. Peserta didik diberi gambaran singkat tentang peran aktif mereka di setiap stasiun agar siap terlibat penuh.`
+            ];
+
+            const langkahPenutupArr = [
+                `<b>Menyimpulkan Materi Bersama (±5 menit).</b> Guru memandu peserta didik membuat kesimpulan tentang <b>${topik}</b>. Contoh: <i>"Anak-anak, dari pembelajaran tadi, apa 3 hal terpenting yang kalian pelajari?"</i> 2-3 peserta didik menyampaikan kesimpulan, lalu guru memberikan penegasan.`,
+                `<b>Refleksi Pembelajaran (±5 menit).</b> Peserta didik diminta menjawab 3 pertanyaan refleksi singkat di buku catatan: (1) Apa yang sudah saya pahami? (2) Apa yang masih sulit? (3) Apa yang akan saya lakukan untuk memperdalam? Guru dapat menggunakan teknik <i>"sticky notes"</i> atau <i>"exit ticket"</i>.`,
+                `<b>Umpan Balik Guru (±3 menit).</b> Guru memberikan umpan balik konstruktif terhadap proses pembelajaran. Apresiasi keterlibatan peserta didik: <i>"Saya senang sekali tadi banyak yang aktif. Untuk yang masih malu-malu, ayo mulai pertemuan depan kita coba berani angkat tangan ya."</i>`,
+                `<b>Penyampaian Materi Berikutnya & Tindak Lanjut (±2 menit).</b> Guru menyampaikan rencana pembelajaran pertemuan berikutnya dan tugas mandiri (jika ada).`,
+                `<b>Doa Penutup & Salam (±2 menit).</b> Guru memimpin doa penutup pembelajaran dan mengucapkan salam. Peserta didik diminta merapikan kelas sebelum keluar.`
+            ];
+
+            // ===================================================
+            // INTEGRASI DRAFT GURU → TEMPLATE CERDAS
+            // Prinsip: jika diisi = ACUAN UTAMA (dikembangkan penuh)
+            //          jika kosong = generate otomatis sesuai konteks
+            // ===================================================
+
+            // --- PENDAHULUAN ---
+            // Pecah poin guru cerdas. Strategi:
+            // 1. Pisah dengan koma/titik koma/newline (pemisah tegas)
+            // 2. Untuk kata sambung "lalu/kemudian/setelah itu/selanjutnya" → ganti jadi koma
+            // 3. Untuk " dan " → HANYA pisah jika kedua sisi punya minimal 3 kata (untuk hindari pecah frasa pendek seperti "kerapihan dan kebersihan")
+            const pecahPoinGuru = (teks) => {
+                let normalized = teks.replace(/\s+(lalu|kemudian|setelah itu|selanjutnya)\s+/gi, ', ');
+                // Pisah utama dengan koma/titik koma/newline
+                let parts = normalized.split(/[,;\n]+/).map(s => s.trim().replace(/^[-•*]\s*/, ''));
+                // Sekarang per part, cek apakah perlu dipecah dengan " dan "
+                const finalParts = [];
+                parts.forEach(part => {
+                    if (!part) return;
+                    // Pecah dengan " dan " HANYA bila kedua sisi adalah klausa lengkap (minimal 3 kata di salah satu sisi)
+                    const danMatches = part.match(/^(.+?)\s+dan\s+(.+)$/i);
+                    if (danMatches) {
+                        const kiri = danMatches[1].trim();
+                        const kanan = danMatches[2].trim();
+                        const kataKiri = kiri.split(/\s+/).length;
+                        const kataKanan = kanan.split(/\s+/).length;
+                        // Pecah hanya jika kedua sisi >= 3 kata (klausa, bukan frasa)
+                        if (kataKiri >= 3 && kataKanan >= 3) {
+                            finalParts.push(kiri);
+                            finalParts.push(kanan);
+                            return;
+                        }
+                    }
+                    finalParts.push(part);
+                });
+                return finalParts.filter(s => s.length > 2);
+            };
+
+            // Helper: tebak judul tahap dari isi kalimat (bukan pakai array urutan tetap)
+            const tebakJudulTahap = (poin) => {
+                const t = poin.toLowerCase();
+                if (/salam|sapa|menyapa/.test(t)) return 'Pembukaan & Salam';
+                if (/doa|berdoa|berdo'a/.test(t)) return 'Doa Bersama';
+                if (/absensi|presensi|kehadiran/.test(t)) return 'Presensi Peserta Didik';
+                if (/kerapihan|kerapian|kebersihan|piket/.test(t)) return 'Pengecekan Kerapihan & Kebersihan Kelas';
+                if (/apersepsi|kaitkan|hubungkan|kaitan/.test(t)) return 'Apersepsi';
+                if (/motivasi|semangat|membangkitkan/.test(t)) return 'Motivasi';
+                if (/tujuan pembelajaran|menyampaikan tujuan|tp/.test(t)) return 'Penyampaian Tujuan Pembelajaran';
+                if (/pertanyaan pemantik|diagnostik|asesmen awal|cek kemampuan/.test(t)) return 'Asesmen Awal / Pertanyaan Pemantik';
+                if (/ice breaking|games|permainan/.test(t)) return 'Ice Breaking';
+                if (/yel|tepuk/.test(t)) return 'Yel-Yel / Tepuk Penyemangat';
+                return null;
+            };
+
+            // Helper: bangun narasi operasional per poin pendahuluan (tanpa pengulangan kata/kalimat)
+            const bangunNarasiPendahuluan = (judul, isiAsli, idx, totalPoin) => {
+                const t = isiAsli.toLowerCase();
+                const pmmMark = idx === 0 && pmmTag ? pmmTag : '';
+                // Tentukan narasi operasional unik berdasarkan jenis poin (tidak copy-paste isi guru)
+                if (/salam|sapa|menyapa/.test(t)) {
+                    return `<b>${judul} (±3 menit).</b>${pmmMark} Guru memasuki ruang kelas dengan sikap terbuka, mengucapkan salam pembuka secara lantang, dan menyapa seluruh peserta didik. Suasana dibuka dengan hangat agar peserta didik merasa diterima dan termotivasi untuk belajar.`;
+                }
+                if (/doa|berdoa|berdo'a/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Ketua kelas memimpin doa pembuka pembelajaran. Guru mengingatkan agar doa dipanjatkan dengan tulus sehingga kegiatan belajar berlangsung dengan penuh berkah dan manfaat.`;
+                }
+                if (/absensi|presensi|kehadiran/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru mencatat kehadiran dengan memanggil nama peserta didik satu per satu. Peserta didik yang tidak hadir dicatat untuk tindak lanjut. Guru dapat menggunakan teknik absensi kreatif (misal: sebutkan satu kata terkait topik hari ini saat dipanggil).`;
+                }
+                if (/kerapihan|kerapian|kebersihan|piket/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru meminta peserta didik memastikan meja, kursi, dan area sekitar tempat duduk dalam kondisi rapi dan bersih. Langkah ini membiasakan disiplin lingkungan sebelum kegiatan inti dimulai.`;
+                }
+                if (/pertanyaan pemantik|diagnostik|asesmen awal|cek kemampuan/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru mengajukan pertanyaan pemantik untuk menggali pengetahuan awal peserta didik terkait <b>${topik}</b>. Contoh: <i>"Apa yang kalian ketahui tentang ${topik.toLowerCase()}? Coba kemukakan dengan kata-katamu sendiri!"</i> Respons peserta didik digunakan sebagai peta awal diferensiasi.`;
+                }
+                if (/apersepsi|kaitkan|hubungkan|kaitan/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru membangun jembatan kognitif antara pengetahuan yang telah dimiliki peserta didik dengan topik baru, yaitu <b>${topik}</b>. Contoh: <i>"Materi yang kita pelajari sebelumnya sangat berkaitan dengan topik hari ini. Dapatkah kalian menebak keterkaitannya?"</i>`;
+                }
+                if (/tujuan pembelajaran|menyampaikan tujuan|tp/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru memaparkan tujuan pembelajaran secara jelas: <i>"${tp}"</i> Guru juga menginformasikan alur kegiatan dan teknik asesmen yang akan digunakan hari ini.`;
+                }
+                if (/model|metode|station rotation|blended|rotasi/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru menjelaskan model <b>${model}</b> dan metode <b>${d.metode || 'diskusi dan tanya jawab'}</b> yang akan diterapkan. Peserta didik memahami peran aktif mereka dalam setiap stasiun rotasi sehingga kegiatan berjalan efektif dan terarah.`;
+                }
+                if (/ice breaking|games|permainan/.test(t)) {
+                    return `<b>${judul} (±2 menit).</b>${pmmMark} Guru memimpin ice breaking singkat untuk membangun energi positif dan konsentrasi peserta didik. Aktivitas dipilih yang tidak hanya menghibur, tetapi juga memancing rasa ingin tahu terkait topik pembelajaran.`;
+                }
+                // Default narasi umum (tanpa menyalin isi guru)
+                return `<b>${judul} (±2 menit).</b>${pmmMark} Guru melaksanakan kegiatan ini sebagai bagian dari mempersiapkan peserta didik secara fisik dan mental untuk mengikuti pembelajaran <b>${topik}</b> dengan optimal.`;
+            };
+
+            const langkahPendahuluanFinal = [...langkahPendahuluanArr];
+            if (d.draftPendahuluan && d.draftPendahuluan.trim()) {
+                const poinList = pecahPoinGuru(d.draftPendahuluan);
+                if (poinList.length > 0) {
+                    const judulDipakai = new Set(); // untuk menghindari judul duplikat
+                    const langkahDariGuru = poinList.map((poin, i) => {
+                        let judul = tebakJudulTahap(poin) || 'Penyampaian Model Pembelajaran';
+                        // Jika judul sudah dipakai, tambahkan penomoran
+                        if (judulDipakai.has(judul)) {
+                            judul = `${judul} (Lanjutan)`;
+                        }
+                        judulDipakai.add(judul);
+                        return bangunNarasiPendahuluan(judul, poin, i, poinList.length);
+                    });
+                    // Jika doa belum disebut, sisipkan setelah langkah pertama (salam/pembukaan)
+                    const adaDoaAwal = poinList.some(p => /doa|berdoa|berdo'a/i.test(p));
+                    if (!adaDoaAwal) {
+                        const doaLangkah = `<b>Doa Bersama (±2 menit).</b> Ketua kelas memimpin doa bersama untuk mengawali pembelajaran. Guru mengajak peserta didik berdoa dengan khusyuk sesuai kepercayaan masing-masing, menumbuhkan rasa syukur atas kesempatan belajar hari ini.`;
+                        // Sisipkan sebagai langkah ke-2 (setelah salam) atau di awal jika hanya 1 langkah
+                        const posisiSisip = Math.min(1, langkahDariGuru.length);
+                        langkahDariGuru.splice(posisiSisip, 0, doaLangkah);
+                    }
+                    // Jika tujuan pembelajaran belum disebut, tambahkan di akhir
+                    const adaTP = poinList.some(p => /tujuan|capaian|target/i.test(p));
+                    if (!adaTP) {
+                        langkahDariGuru.push(
+                            `<b>Penyampaian Tujuan Pembelajaran (±2 menit).</b> Guru menyampaikan tujuan: <i>"${tp}"</i> serta model pembelajaran yang digunakan: <b>${model}</b>.`
+                        );
+                    }
+                    langkahPendahuluanFinal.splice(0, langkahPendahuluanFinal.length, ...langkahDariGuru);
+                }
+            }
+
+            // --- KEGIATAN INTI ---
+            let langkahIntiArrIntegrated = langkahInti.map((step, i) => {
+                let txt = step;
+                if (i === 0) txt += pmmTag;
+                return txt;
+            });
+
+            if (d.draftInti && d.draftInti.trim()) {
+                const ideInti = d.draftInti.trim();
+                const stasiunMatches = ideInti.match(/station\s*\d+|stasiun\s*\d+/gi);
+                // Dedup berdasar nomor (mis. "stasiun 1" yang muncul 2x dianggap 1)
+                const jumlahStasiun = stasiunMatches ? new Set(stasiunMatches.map(s => s.toLowerCase().replace(/\s+/g, ' '))).size : 0;
+
+                if (jumlahStasiun >= 2) {
+                    // Pecah berdasarkan token "stasiun N" — pakai lookahead lebih ketat (huruf kapital di awal kata 'stasiun' opsional)
+                    const stasiunList = [];
+                    const seenNo = new Set();
+                    const stasiunParts = ideInti.split(/(?=(?:station|stasiun)\s+\d)/i).filter(s => s.trim());
+                    stasiunParts.forEach((bagian) => {
+                        const noMatch = bagian.match(/(?:station|stasiun)\s+(\d+)/i);
+                        if (!noMatch) return; // lewati pengantar (misal "4 stasiun:")
+                        const no = noMatch[1];
+                        if (seenNo.has(no)) return; // hindari duplikat nomor
+                        seenNo.add(no);
+                        const konten = bagian.replace(/(?:station|stasiun)\s+\d+\s*[,:.]?\s*/i, '').trim();
+                        stasiunList.push({ no, konten });
+                    });
+                    langkahIntiArrIntegrated = [
+                        `<b>Pembagian Kelompok & Penjelasan Rotasi Stasiun (±5 menit).</b>${pmmTag} Peserta didik dibagi ke dalam ${stasiunList.length} kelompok heterogen. Guru menjelaskan rotasi: setiap kelompok berpindah searah setiap ±15 menit sambil membawa LKPD.`,
+                        ...stasiunList.map(s =>
+                            `<b>Stasiun ${s.no} (±15 menit).</b> ${s.konten ? expandStasiun(s.konten, topik, tp) : `Peserta didik mengerjakan aktivitas terkait <b>${topik}</b>. Guru memantau dan membimbing.`}`
+                        ),
+                        `<b>Konsolidasi & Diskusi Pleno (±10 menit).</b> Guru memimpin diskusi pleno. Setiap kelompok berbagi 1 poin utama. Guru meluruskan miskonsepsi dan memberikan penguatan.`
+                    ];
+                } else {
+                    // Ide guru non-stasiun: pecah poin dan jadikan tahap pembelajaran
+                    const poinInti = pecahPoinGuru(ideInti);
+                    if (poinInti.length >= 2) {
+                        // Tebak judul tahap inti dari isi
+                        const tebakJudulInti = (poin) => {
+                            const t = poin.toLowerCase();
+                            if (/orientasi|pengantar|paparan|presentasi guru|menjelaskan/.test(t)) return 'Orientasi & Pengantar Materi';
+                            if (/diskusi|berdiskusi|bertukar pikiran/.test(t)) return 'Diskusi Kelompok';
+                            if (/eksplorasi|mengeksplor|cari|menggali/.test(t)) return 'Eksplorasi Materi';
+                            if (/wawancara|narasumber/.test(t)) return 'Wawancara Narasumber';
+                            if (/observasi|pengamatan|amati|mengamati/.test(t)) return 'Observasi';
+                            if (/eksperimen|percobaan|praktik|praktek/.test(t)) return 'Eksperimen / Praktik';
+                            if (/kuis|quizizz|kahoot|test/.test(t)) return 'Kuis Interaktif';
+                            if (/video|tonton|menonton/.test(t)) return 'Menonton Video Pembelajaran';
+                            if (/membaca|kaji|telaah/.test(t)) return 'Membaca / Mengkaji Sumber';
+                            if (/lkpd|lembar kerja|mengerjakan/.test(t)) return 'Pengerjaan LKPD';
+                            if (/presentasi|present|memaparkan|menyajikan/.test(t)) return 'Presentasi Hasil';
+                            if (/tanya jawab|q.?a/.test(t)) return 'Tanya Jawab';
+                            if (/canva|infografis|poster|membuat/.test(t)) return 'Pembuatan Produk';
+                            if (/refleksi|menyimpulkan|kesimpulan/.test(t)) return 'Refleksi & Penguatan';
+                            return null;
+                        };
+
+                        langkahIntiArrIntegrated = poinInti.map((p, i) => {
+                            const pmm = i === 0 ? pmmTag : '';
+                            const judul = tebakJudulInti(p) || `Tahap ${i+1}`;
+                            const isiKalimat = p.charAt(0).toUpperCase() + p.slice(1);
+                            // Sisipkan platform digital bila relevan
+                            const pLower = p.toLowerCase();
+                            const digitalRaw2 = (d.pemanfaatanDigital || '').toLowerCase();
+                            let sisipanDigi = '';
+                            if ((pLower.includes('pid') || digitalRaw2.includes('pid')) && !isiKalimat.includes('PID')) {
+                                sisipanDigi = ' Guru menampilkan materi melalui <b>Papan Interaktif Digital (PID)</b> — papan tulis digital yang dapat disentuh langsung untuk menulis, menggambar, atau menjalankan media pembelajaran secara interaktif.';
+                            } else if ((pLower.includes('mpi') || digitalRaw2.includes('mpi')) && !isiKalimat.includes('MPI')) {
+                                sisipanDigi = ' Guru menampilkan <b>MPI (Media Pembelajaran Interaktif)</b> melalui LCD/PID untuk memperkaya visualisasi materi.';
+                            } else if ((pLower.includes('quizizz') || digitalRaw2.includes('quizizz')) && (judul.includes('Kuis') || judul.includes('Interaktif'))) {
+                                sisipanDigi = ' Platform <b>Quizizz</b> digunakan sebagai media kuis digital yang diakses peserta didik melalui gawai masing-masing.';
+                            }
+                            return `<b>${judul} (±15 menit).</b>${pmm} ${isiKalimat}.${sisipanDigi} Guru berkeliling memberikan umpan balik langsung kepada setiap kelompok.`;
+                        });
+                        langkahIntiArrIntegrated.push(
+                            `<b>Penguatan & Sintesis (±10 menit).</b> Guru merangkum hasil aktivitas, meluruskan miskonsepsi, dan menghubungkan <b>${topik}</b> dengan kehidupan nyata peserta didik.`
+                        );
+                    } else {
+                        langkahIntiArrIntegrated[0] = `<b>Eksplorasi Utama (±20 menit).</b>${pmmTag} `
+                            + `${ideInti.charAt(0).toUpperCase() + ideInti.slice(1)}. `
+                            + `Guru memandu peserta didik secara terstruktur, setiap kelompok mencatat temuan di LKPD. `
+                            + `Guru berkeliling dengan pertanyaan pematik: <i>"Apa yang kalian temukan? Mengapa hal ini bisa terjadi?"</i>`;
+                    }
+                }
+            }
+            const langkahIntiArr = langkahIntiArrIntegrated;
+
+            // Helper expandStasiun - dengan integrasi tool digital dari pemanfaatanDigital/sarpras
+            function expandStasiun(konten, topik, tp) {
+                const k = konten.toLowerCase();
+                // Deteksi tool digital dari input guru
+                const digitalRaw = (d.pemanfaatanDigital || '').toLowerCase();
+                const sarprasRaw = (d.sarpras || []).join(' ').toLowerCase();
+                const hasPID = digitalRaw.includes('pid') || konten.toLowerCase().includes('pid');
+                const hasMPI = digitalRaw.includes('mpi') || konten.toLowerCase().includes('mpi');
+                const hasQuizizz = digitalRaw.includes('quizizz') || konten.toLowerCase().includes('quizizz');
+                const hasKahoot = digitalRaw.includes('kahoot') || konten.toLowerCase().includes('kahoot');
+                const hasCanva = digitalRaw.includes('canva') || konten.toLowerCase().includes('canva');
+                const hasGForm = digitalRaw.includes('google form') || digitalRaw.includes('gform') || konten.toLowerCase().includes('google form');
+                const hasPadlet = digitalRaw.includes('padlet') || konten.toLowerCase().includes('padlet');
+                const hasGSlide = digitalRaw.includes('google slide') || konten.toLowerCase().includes('google slide');
+                const hasVideo = digitalRaw.includes('video') || konten.toLowerCase().includes('video');
+                const hasChromebook = sarprasRaw.includes('chromebook') || sarprasRaw.includes('gawai');
+
+                // Tentukan platform digital yang akan disebut secara eksplisit
+                let platformDigi = '';
+                if (hasPID) platformDigi = '<b>Papan Interaktif Digital (PID)</b>';
+                else if (hasMPI) platformDigi = '<b>MPI (Media Pembelajaran Interaktif)</b>';
+                else if (hasQuizizz) platformDigi = '<b>Quizizz</b>';
+                else if (hasKahoot) platformDigi = '<b>Kahoot!</b>';
+                else if (hasCanva) platformDigi = '<b>Canva for Education</b>';
+                else if (hasGForm) platformDigi = '<b>Google Form</b>';
+                else if (hasPadlet) platformDigi = '<b>Padlet</b>';
+                else if (hasGSlide) platformDigi = '<b>Google Slides</b>';
+
+                // PRIORITAS: branch lebih spesifik dulu (kuis/refleksi/canva/video) baru sumber bacaan umum
+                if (k.includes('kuis') || k.includes('quiz') || k.includes('quizizz') || k.includes('kahoot')) {
+                    let platform;
+                    if (hasPID) {
+                        platform = '<b>Papan Interaktif Digital (PID)</b>';
+                        return `Peserta didik bergiliran maju ke depan untuk mengikuti kuis interaktif terkait <b>${topik}</b> melalui ${platform}. PID memungkinkan peserta didik menjawab langsung dengan menyentuh layar — guru bisa langsung melihat respon dan memberikan umpan balik. Kuis berlangsung ±10 menit, hasil jadi bahan refleksi pemahaman bersama.`;
+                    } else if (hasMPI) {
+                        platform = '<b>MPI (Media Pembelajaran Interaktif)</b>';
+                        return `Peserta didik mengikuti kuis interaktif terkait <b>${topik}</b> melalui ${platform} yang ditampilkan di layar LCD. Setiap kelompok bergiliran menjawab. Kuis dikerjakan ±10 menit, hasil jadi bahan refleksi pemahaman.`;
+                    } else {
+                        platform = platformDigi || '<b>Quizizz/Kahoot!</b>';
+                        return `Peserta didik mengikuti kuis interaktif terkait <b>${topik}</b> melalui ${platform}${hasChromebook ? ' yang diakses via Chromebook/gawai masing-masing' : ''}. Kuis dikerjakan secara mandiri selama ±10 menit. Hasil kuis langsung menjadi bahan evaluasi dan refleksi pemahaman.`;
+                    }
+                } else if (k.includes('refleksi') || k.includes('kesimpulan') || k.includes('lkpd2') || k.includes('lkpd 2')) {
+                    const mediaDigi = hasPID ? ` (refleksi juga dapat dituangkan secara visual di <b>PID</b> oleh juru bicara kelompok)` : platformDigi ? ` atau melalui ${platformDigi} (digital exit ticket)` : '';
+                    return `Peserta didik berdiskusi kelompok menyimpulkan hasil belajar <b>${topik}</b>. Mengisi LKPD refleksi${mediaDigi}: (1) 3 hal yang dipelajari, (2) 1 hal yang masih membingungkan, (3) 1 rencana tindak lanjut. Juru bicara menyampaikan kesimpulan kelompok di sesi pleno.`;
+                } else if (k.includes('canva') || k.includes('infografis') || k.includes('poster') || k.includes('desain')) {
+                    return `Peserta didik membuat produk kreatif terkait <b>${topik}</b> menggunakan <b>Canva for Education</b>${hasChromebook ? ' melalui Chromebook/gawai' : ''}. Produk dapat berupa infografis, poster digital, atau presentasi visual. Guru memantau proses dan memastikan konten sesuai dengan tujuan pembelajaran.`;
+                } else if (k.includes('video') || k.includes('tonton')) {
+                    const platVideo = hasPID ? 'ditampilkan guru di <b>Papan Interaktif Digital (PID)</b> sehingga seluruh kelas dapat menyaksikan dengan jelas' 
+                                    : hasMPI ? 'ditampilkan dalam format <b>MPI</b>' 
+                                    : 'ditayangkan dari <b>YouTube Edukasi</b> melalui LCD Projector';
+                    return `Peserta didik menyimak video pembelajaran tentang <b>${topik}</b> yang ${platVideo}. Sambil menonton, peserta didik mencatat poin penting di lembar kerja. Guru memberi panduan fokus: <i>"Perhatikan bagian yang menjelaskan tentang ${topik.toLowerCase()}."</i>`;
+                } else if (k.includes('potong') || k.includes('kertas') || k.includes('acak') || k.includes('memasangkan') || k.includes('istilah')) {
+                    return `Peserta didik menyusun potongan kertas berisi istilah/konsep terkait <b>${topik}</b> yang telah diacak guru. Tugas: mencocokkan istilah dengan definisi/contohnya. Hasil dicatat di LKPD.`;
+                } else if (k.includes('sumber') || k.includes('buku') || k.includes('pdf') || k.includes('membaca') || k.includes('kaji') || k.includes('telaah') || k.includes('mpi') || k.includes('modul') || (k.includes('lkpd') && !k.includes('lkpd 2') && !k.includes('lkpd2'))) {
+                    // Susun daftar sumber yang dipakai berdasarkan input form
+                    const sumberPakai = [];
+                    if (d.bukuPaket && d.bukuPaket.trim()) sumberPakai.push(`<b>${d.bukuPaket}</b>`);
+                    const jenisRM = d.jenisRuangMurid || [];
+                    if (jenisRM.includes('Modul Ajar')) sumberPakai.push('<b>Modul Ajar dari platform Ruang Murid</b>');
+                    if (jenisRM.includes('Bahan Ajar')) sumberPakai.push('<b>Bahan Ajar dari platform Ruang Murid</b>');
+                    if (jenisRM.includes('Buku Digital')) sumberPakai.push('<b>Buku Digital dari platform Ruang Murid</b>');
+                    if (jenisRM.includes('LKPD')) sumberPakai.push('<b>LKPD dari platform Ruang Murid</b>');
+                    if (jenisRM.includes('MPI (Media Pembelajaran Interaktif)') && !sumberPakai.find(s => s.includes('MPI'))) sumberPakai.push('<b>MPI dari Ruang Murid</b>');
+
+                    const sumberText = sumberPakai.length > 0 
+                        ? `, yaitu ${sumberPakai.join(', ')}` 
+                        : ' yang disediakan guru';
+                    const mediaTambahan = hasPID ? ` Sumber juga ditampilkan guru melalui <b>Papan Interaktif Digital (PID)</b> di depan kelas — peserta didik dapat melihat sumber visual dengan jelas dan guru dapat menyoroti/menulis langsung di papan saat menjelaskan.`
+                                        : hasMPI ? ` Penjelasan diperkaya dengan <b>MPI (Media Pembelajaran Interaktif)</b> yang ditampilkan di layar LCD.` : '';
+                    return `Peserta didik membaca dan mengkaji materi <b>${topik}</b> dari sumber belajar${sumberText}.${mediaTambahan} Sambil mengkaji, peserta didik mengisi tabel LKPD — mencatat fakta utama, konsep penting, dan pertanyaan yang muncul. Guru memantau dan siap menjawab pertanyaan yang diajukan.`;
+                } else {
+                    const kalimat = konten.charAt(0).toUpperCase() + konten.slice(1);
+                    const sisipDigi = hasPID ? ` dengan dukungan visual dari <b>Papan Interaktif Digital (PID)</b>` : platformDigi ? ` dengan dukungan ${platformDigi}` : '';
+                    return `${kalimat}${sisipDigi}. Peserta didik mengerjakan aktivitas ini terkait <b>${topik}</b>. Guru memantau dan memberi pertanyaan pemandu: <i>"Apa yang kalian amati? Apa hubungannya dengan ${topik.toLowerCase()}?"</i>`;
+                }
+            }
+
+            // --- PENUTUP ---
+            // Helper: tebak judul tahap penutup dari isi
+            const tebakJudulPenutup = (poin) => {
+                const t = poin.toLowerCase();
+                if (/kesimpulan|menyimpulkan|menarik kesimpulan|simpul/.test(t)) return 'Menyimpulkan Materi Bersama';
+                if (/refleksi|merefleksikan/.test(t)) return 'Refleksi Pembelajaran';
+                if (/umpan balik|feedback|apresiasi/.test(t)) return 'Umpan Balik Guru';
+                if (/tindak lanjut|tugas rumah|pr|pekerjaan rumah/.test(t)) return 'Penyampaian Tindak Lanjut';
+                if (/materi berikut|pertemuan berikut/.test(t)) return 'Penyampaian Materi Berikutnya';
+                if (/doa|berdoa/.test(t)) return 'Doa Penutup';
+                if (/salam/.test(t)) return 'Salam Penutup';
+                if (/yel|tepuk/.test(t)) return 'Yel-Yel Penutup';
+                return null;
+            };
+
+            // Helper: bangun narasi operasional unik per poin penutup (tidak menyalin kata guru, tidak duplikat)
+            const bangunNarasiPenutup = (judul, isiAsli, idx) => {
+                const t = isiAsli.toLowerCase();
+                const durasi = idx === 0 ? '±4 menit' : '±2 menit';
+                if (/kesimpulan|menyimpulkan|menarik kesimpulan|simpul/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Guru memfasilitasi peserta didik untuk merangkum intisari pembelajaran <b>${topik}</b> secara bersama-sama. Setiap kelompok diminta menyampaikan satu poin utama yang paling berkesan, kemudian guru memberikan penguatan konsep agar pemahaman peserta didik semakin kokoh dan terarah.`;
+                }
+                if (/refleksi|merefleksikan/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Peserta didik secara mandiri menuliskan jawaban atas tiga pertanyaan reflektif: (1) Apa yang paling bermakna dari pembelajaran hari ini? (2) Konsep mana yang masih perlu diperdalam? (3) Bagaimana saya akan menerapkan pemahaman ini dalam kehidupan nyata? Guru mengingatkan bahwa refleksi bukan sekadar formalitas, melainkan cara untuk tumbuh sebagai pelajar mandiri.`;
+                }
+                if (/motivasi|semangat|apresiasi|umpan balik|feedback/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Guru memberikan apresiasi tulus atas kerja keras dan keaktifan peserta didik selama pembelajaran berlangsung. Guru menyampaikan pesan motivasi yang membangun: <i>"Kalian sudah belajar dengan luar biasa hari ini. Teruslah penasaran dan jangan takut untuk bertanya, karena setiap pertanyaan adalah awal dari pemahaman yang lebih dalam."</i>`;
+                }
+                if (/tindak lanjut|tugas rumah|pr|pekerjaan rumah/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Guru menyampaikan tugas tindak lanjut yang harus diselesaikan peserta didik di luar kelas: mengeksplorasi lebih jauh konsep <b>${topik}</b> melalui sumber bacaan tambahan atau latihan soal yang disiapkan guru. Peserta didik mencatat tugas tersebut dengan jelas agar dapat diselesaikan tepat waktu.`;
+                }
+                if (/materi berikut|pertemuan berikut/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Guru memberikan gambaran singkat tentang topik yang akan dipelajari pada pertemuan berikutnya, sekaligus memotivasi peserta didik untuk mempersiapkan diri dengan membaca atau mencari informasi awal terkait topik tersebut.`;
+                }
+                if (/doa|berdoa/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Ketua kelas atau salah satu peserta didik yang ditunjuk memimpin doa penutup sebagai ungkapan syukur atas ilmu yang telah diperoleh selama pembelajaran berlangsung.`;
+                }
+                if (/salam/.test(t)) {
+                    return `<b>${judul} (${durasi}).</b> Guru mengucapkan salam penutup dengan penuh kehangatan, mengingatkan peserta didik untuk menjaga kerapihan kelas, dan mempersilakan peserta didik meninggalkan ruangan secara tertib.`;
+                }
+                // Default: narasi motivasi/tindak lanjut umum
+                return `<b>${judul} (${durasi}).</b> Guru menutup sesi pembelajaran dengan memberikan pesan-pesan positif, mengingatkan peserta didik tentang pentingnya konsistensi belajar, serta menyiapkan mereka untuk melanjutkan eksplorasi topik <b>${topik}</b> secara mandiri.`;
+            };
+
+            const langkahPenutupFinal = [...langkahPenutupArr];
+            if (d.draftPenutup && d.draftPenutup.trim()) {
+                const poinPenutup = pecahPoinGuru(d.draftPenutup);
+                if (poinPenutup.length > 0) {
+                    const judulDipakaiPenutup = new Set();
+                    const penutupDariGuru = poinPenutup.map((p, i) => {
+                        let judul = tebakJudulPenutup(p) || 'Kegiatan Penutup';
+                        if (judulDipakaiPenutup.has(judul)) {
+                            // Hindari judul duplikat — gabungkan ke poin terakhir atau beri label berbeda
+                            judul = judul + ' Lanjutan';
+                        }
+                        judulDipakaiPenutup.add(judul);
+                        return bangunNarasiPenutup(judul, p, i);
+                    });
+                    // Pastikan ada doa/salam penutup di akhir bila belum disebut guru
+                    const adaDoa = poinPenutup.some(p => /doa|salam/i.test(p));
+                    if (!adaDoa) {
+                        penutupDariGuru.push(
+                            `<b>Doa Penutup & Salam (±2 menit).</b> Guru memimpin doa penutup sebagai tanda syukur atas kelancaran pembelajaran. Peserta didik diminta merapikan tempat duduk dan perlengkapan belajar sebelum meninggalkan kelas dengan tertib.`
+                        );
+                    }
+                    langkahPenutupFinal.splice(0, langkahPenutupFinal.length, ...penutupDariGuru);
+                }
+            }
+            const toOL = (arr) => `<ol>${arr.map(s => `<li>${s}</li>`).join('')}</ol>`;
+
+            // Diferensiasi sesuai target
+            let difKonten, difProses, difProduk;
+            if (d.target.includes("kesulitan")) {
+                difKonten = `Materi <b>${topik}</b> disajikan dalam bentuk visual sederhana (infografis 1 halaman, video pendek 3-5 menit berbahasa Indonesia dengan subtitle). Kosakata sulit disertai glosarium bergambar. Disediakan ringkasan materi 1 lembar (one-pager) dengan poin utama dicetak tebal.`;
+                difProses = `Guru membimbing intensif kelompok kecil 3-4 orang dengan teknik <i>scaffolding</i> bertahap: (1) tunjukkan contoh, (2) kerjakan bersama, (3) peserta didik kerjakan mandiri. Konsep diulang minimal 2-3 kali dengan cara berbeda. Guru menggunakan kalimat sederhana dan jelas.`;
+                difProduk = `Produk akhir dibuat dalam bentuk yang mudah: peta konsep sederhana 1 halaman, presentasi singkat 3 slide, atau gambar berlabel. Kriteria penilaian difokuskan pada pemahaman konsep dasar, bukan kompleksitas tampilan.`;
+            } else if (d.target.includes("HOTS") || d.target.includes("tinggi")) {
+                difKonten = `Materi <b>${topik}</b> diperkaya dengan studi kasus kontemporer/jurnal ilmiah/artikel ilmiah populer. Peserta didik diberikan tantangan berupa permasalahan kompleks dengan multi-perspektif (contoh: kasus nyata dari berita terkini yang relevan).`;
+                difProses = `Peserta didik melakukan investigasi mandiri dengan minimal 3 sumber rujukan, debat ilmiah dengan tim pro-kontra, dan analisis kritis menggunakan teknik <i>"Six Thinking Hats"</i> atau <i>"Five Whys"</i>. Guru berperan sebagai moderator yang menantang argumen peserta didik.`;
+                difProduk = `Produk berupa karya tulis ilmiah mini (3-5 halaman dengan referensi APA), video esai analitis 5-10 menit, prototipe inovasi/solusi, atau artikel opini yang bisa dipublikasikan di mading sekolah.`;
+            } else if (d.target.includes("Inklusi")) {
+                difKonten = `Materi <b>${topik}</b> disajikan multi-modal: tersedia versi teks, audio (rekaman), visual (gambar/video), dan kinestetik (alat peraga/manipulatif). Guru menyiapkan format Braille/teks besar bila diperlukan, serta menggunakan <i>caption</i> pada video.`;
+                difProses = `Pengelompokan heterogen dengan teknik <i>peer tutoring</i> (peserta didik membantu teman). Tersedia teknologi asistif (pembaca layar/text-to-speech jika perlu). Instruksi diberikan secara berulang dengan modalitas berbeda (lisan, tulis, gambar). Guru menyediakan waktu lebih bila diperlukan.`;
+                difProduk = `Produk fleksibel sesuai kemampuan: lisan (rekaman audio), tulis (laporan), gambar (poster), video, atau demonstrasi langsung. Penilaian berfokus pada esensi pemahaman, bukan format produk.`;
+            } else {
+                difKonten = `Materi <b>${topik}</b> disajikan secara variatif: teks bacaan dari buku, video pembelajaran 5-10 menit, infografis, dan media interaktif (Quizizz/Kahoot/Padlet). Peserta didik dapat memilih sumber yang paling sesuai gaya belajarnya.`;
+                difProses = `Peserta didik bekerja dalam kelompok heterogen 4-5 orang dengan diskusi terstruktur (teknik <i>think-pair-share</i> atau <i>jigsaw</i>). Tersedia "menu aktivitas" sehingga kelompok bisa memilih cara mengeksplorasi materi (misalnya: studi pustaka, wawancara, atau observasi).`;
+                difProduk = `Produk akhir dapat berupa <b>${d.targetProduk || 'laporan tertulis, poster digital (Canva), presentasi PPT, infografis, atau video pendek'}</b> sesuai minat & bakat peserta didik. Semua produk dinilai dengan rubrik yang sama (lihat Lampiran 3).`;
+            }
+
+            // ===== ASESMEN: jika diisi guru → jadikan acuan; jika kosong → generate sesuai konteks =====
+            const kembangAsesmen = (draft, jenis, topik, targetProduk) => {
+                if (!draft || !draft.trim()) return null;
+                const teks = draft.trim();
+
+                if (jenis === 'awal') {
+                    // Deteksi: apakah input guru adalah INSTRUKSI (mis. "2 pertanyaan pemantik", "buat 3 soal diagnostik")
+                    // atau KONTEN PERTANYAAN nyata (mis. "Apa yang kalian ketahui tentang...")
+                    const isInstruksi = (
+                        teks.length < 60 ||  // terlalu pendek untuk pertanyaan utuh
+                        /^\d+\s*(pertanyaan|soal|item)/i.test(teks) ||  // diawali angka + "pertanyaan/soal"
+                        /^(buat|buatkan|tulis|tuliskan|berikan)\s/i.test(teks) ||  // diawali kata kerja perintah
+                        !teks.includes('?') && teks.split(/\s+/).length < 8  // tidak ada tanda tanya & sangat pendek
+                    );
+
+                    let hasil = `<p style="margin-bottom:8px;"><b>Teknik:</b> Pertanyaan pemantik lisan sebelum kegiatan inti dimulai (durasi ±5 menit). Guru menggali pengetahuan awal peserta didik untuk merancang diferensiasi pembelajaran yang tepat.</p>`;
+
+                    if (isInstruksi) {
+                        // Tampilkan instruksi guru sebagai catatan, lalu GENERATE pertanyaan asli
+                        // Deteksi jumlah pertanyaan yang diminta
+                        const jumMatch = teks.match(/(\d+)\s*pertanyaan/i);
+                        const jumPertanyaan = jumMatch ? Math.min(parseInt(jumMatch[1]), 7) : 3;
+
+                        hasil += `<p style="margin-bottom:8px; font-style:italic; color:#555;">Arahan guru: <i>"${teks}"</i></p>`;
+                        hasil += `<p style="margin-bottom:6px;"><b>Pertanyaan Pemantik tentang ${topik}:</b></p>`;
+                        hasil += `<ol style="margin:0 0 8px 20px; padding:0;">`;
+
+                        // Bank pertanyaan diagnostik tentang topik
+                        const bankPertanyaan = [
+                            `"Apa yang sudah kalian ketahui tentang ${topik}? Ceritakan dengan bahasa kalian sendiri."`,
+                            `"Pernahkah kalian menjumpai ${topik.toLowerCase()} dalam kehidupan sehari-hari? Berikan contoh konkret."`,
+                            `"Menurut kalian, mengapa ${topik.toLowerCase()} penting untuk dipelajari di kelas ini?"`,
+                            `"Bila kalian harus menjelaskan ${topik.toLowerCase()} kepada adik kelas, kira-kira kalian akan menjelaskannya seperti apa?"`,
+                            `"Adakah hal yang membuat kalian penasaran atau bingung tentang ${topik.toLowerCase()}?"`,
+                            `"Bayangkan kalian menjadi ahli ${topik.toLowerCase()} — masalah apa yang ingin kalian pecahkan?"`,
+                            `"Coba sebutkan satu pengalaman pribadi yang berkaitan dengan ${topik.toLowerCase()}."`
+                        ];
+
+                        for (let i = 0; i < jumPertanyaan && i < bankPertanyaan.length; i++) {
+                            hasil += `<li style="margin-bottom:4px;"><i>${bankPertanyaan[i]}</i></li>`;
+                        }
+                        hasil += `</ol>`;
+                    } else {
+                        // Input guru SUDAH berupa pertanyaan utuh → tampilkan apa adanya (1 poin = 1 pertanyaan)
+                        const poin = teks.split(/[?\n;]+/).map(s => s.trim()).filter(s => s.length > 5);
+                        hasil += `<p style="margin-bottom:6px;"><b>Pertanyaan Pemantik tentang ${topik}:</b></p>`;
+                        hasil += `<ol style="margin:0 0 8px 20px; padding:0;">`;
+                        poin.forEach(p => {
+                            // Pastikan diakhiri tanda tanya
+                            const pertanyaan = p.replace(/[?.!]+$/, '') + '?';
+                            hasil += `<li style="margin-bottom:4px;"><i>"${pertanyaan.charAt(0).toUpperCase() + pertanyaan.slice(1)}"</i></li>`;
+                        });
+                        if (poin.length < 2) {
+                            hasil += `<li style="margin-bottom:4px;"><i>"Berikan satu contoh nyata ${topik.toLowerCase()} yang pernah kalian jumpai dalam kehidupan sehari-hari!"</i></li>`;
+                        }
+                        hasil += `</ol>`;
+                    }
+                    hasil += `<p style="margin:0;"><b>Tindak Lanjut:</b> Jawaban peserta didik dipetakan ke dalam tiga kategori — (1) sudah paham: diberi pengayaan, (2) sebagian paham: diberi penguatan konsep, (3) belum paham: mendapatkan pendampingan intensif.</p>`;
+                    return hasil;
+
+                } else if (jenis === 'formatif') {
+                    const poin = teks.split(/[,;\n]+/).map(s => s.trim()).filter(s => s.length > 3);
+                    let hasil = `<p style="margin-bottom:8px;"><b>Waktu pelaksanaan:</b> Sepanjang proses pembelajaran berlangsung (ongoing assessment).</p>`;
+                    hasil += `<p style="margin-bottom:6px;"><b>Teknik Penilaian:</b></p>`;
+                    hasil += `<ol style="margin:0 0 8px 20px; padding:0;">`;
+                    poin.forEach(p => {
+                        hasil += `<li style="margin-bottom:5px;"><b>${p.charAt(0).toUpperCase() + p.slice(1)}.</b> Guru mencatat perkembangan peserta didik menggunakan Lembar Observasi (Lampiran 2). Umpan balik diberikan secara langsung: <i>"Yang sudah tepat: … | Yang perlu ditingkatkan: …"</i></li>`;
+                    });
+                    if (poin.length < 2) {
+                        hasil += `<li style="margin-bottom:5px;"><b>Penilaian LKPD.</b> Guru menilai hasil kerja kelompok menggunakan rubrik penilaian (Lampiran 3).</li>`;
+                    }
+                    hasil += `</ol>`;
+                    hasil += `<p style="margin:0;"><b>Instrumen:</b> Lembar Observasi (Lampiran 2) dan Rubrik Penilaian (Lampiran 3).</p>`;
+                    return hasil;
+
+                } else if (jenis === 'sumatif') {
+                    const adaPG = teks.toLowerCase().includes('pg') || teks.toLowerCase().includes('pilihan ganda') || teks.toLowerCase().includes('quizizz') || teks.toLowerCase().includes('quiz');
+                    const adaEsai = teks.toLowerCase().includes('esai') || teks.toLowerCase().includes('uraian') || teks.toLowerCase().includes('laporan');
+                    // Regex fleksibel: deteksi angka sebelum "soal/butir/PG/pilihan ganda"
+                    const soalMatch = teks.match(/(\d+)\s*(?:soal|butir|pg|pilihan ganda)/i);
+                    const jumlahSoal = soalMatch ? parseInt(soalMatch[1]) : 10;
+                    const platform = teks.toLowerCase().includes('quizizz') ? 'Quizizz' : teks.toLowerCase().includes('google form') ? 'Google Form' : 'platform digital (Quizizz/Google Form)';
+
+                    let hasil = `<p style="margin-bottom:8px;"><b>Waktu pelaksanaan:</b> Akhir sesi pembelajaran sebagai evaluasi pencapaian tujuan.</p>`;
+                    hasil += `<p style="margin-bottom:6px;"><b>Bentuk Asesmen:</b></p>`;
+                    hasil += `<ol style="margin:0 0 8px 20px; padding:0;">`;
+                    if (adaPG) {
+                        hasil += `<li style="margin-bottom:5px;"><b>Tes Pilihan Ganda</b> — sebanyak <b>${jumlahSoal} soal</b> mencakup level kognitif C2 hingga C4 tentang topik <b>${topik}</b>, dikerjakan melalui ${platform} dalam waktu ${jumlahSoal <= 5 ? '10–15' : '15–20'} menit. Skor per soal: ${Math.floor(100/jumlahSoal)} poin. Nilai maksimum: 100. Soal lengkap tersedia di <b>Lampiran 5</b>.</li>`;
+                    }
+                    if (adaEsai) {
+                        hasil += `<li style="margin-bottom:5px;"><b>Tes Uraian/Esai</b> — peserta didik menjawab pertanyaan analitis tentang <b>${topik}</b>. Penilaian menggunakan rubrik holistik 4 level (lihat Lampiran 3).</li>`;
+                    }
+                    if (!adaPG && !adaEsai) {
+                        const poin = teks.split(/[,;\n]+/).map(s => s.trim()).filter(s => s.length > 3);
+                        poin.forEach(p => {
+                            hasil += `<li style="margin-bottom:5px;"><b>${p.charAt(0).toUpperCase() + p.slice(1)}.</b> Dinilai menggunakan rubrik penilaian (Lampiran 3).</li>`;
+                        });
+                    }
+                    hasil += `</ol>`;
+                    hasil += `<p style="margin:0;"><b>Kriteria Ketercapaian:</b> 86–100 = Sangat Baik &nbsp;|&nbsp; 71–85 = Baik &nbsp;|&nbsp; 56–70 = Cukup &nbsp;|&nbsp; &lt;56 = Perlu Bimbingan.</p>`;
+                    return hasil;
+                }
+                return null;
+            };
+
+            const asesmenAwalText = kembangAsesmen(d.draftAsesmenAwal, 'awal', topik, d.targetProduk)
+                || `<p style="margin-bottom:8px;"><b>Teknik:</b> Pertanyaan pemantik lisan/tertulis (3–5 pertanyaan) sebelum memasuki kegiatan inti (durasi ±5 menit).</p><p style="margin-bottom:6px;"><b>Contoh Pertanyaan Asesmen Awal tentang ${topik}:</b></p><ol style="margin:0 0 8px 20px;padding:0;"><li style="margin-bottom:4px;"><i>"Apa yang sudah kalian ketahui tentang ${topik}? Ceritakan dengan bahasa kalian sendiri."</i></li><li style="margin-bottom:4px;"><i>"Pernahkah kalian menjumpai ${topik.toLowerCase()} dalam kehidupan sehari-hari? Berikan contohnya."</i></li><li style="margin-bottom:4px;"><i>"Menurut kalian, mengapa ${topik.toLowerCase()} penting untuk dipelajari?"</i></li></ol><p style="margin:0;"><b>Tindak Lanjut:</b> Jawaban peserta didik dipetakan ke dalam tiga kategori — (1) sudah paham: diberi pengayaan, (2) sebagian paham: diberi penguatan, (3) belum paham: mendapatkan pendampingan intensif.</p>`;
+
+            const asesmenFormatifText = kembangAsesmen(d.draftAsesmenFormatif, 'formatif', topik, d.targetProduk)
+                || `<p style="margin-bottom:8px;"><b>Waktu pelaksanaan:</b> Sepanjang proses pembelajaran berlangsung (ongoing assessment).</p><p style="margin-bottom:6px;"><b>Teknik Penilaian:</b></p><ol style="margin:0 0 8px 20px;padding:0;"><li style="margin-bottom:5px;"><b>Observasi sikap dan keterlibatan</b> menggunakan Lembar Observasi (Lampiran 2). Guru mengamati sambil mencatat perkembangan peserta didik secara berkelanjutan.</li><li style="margin-bottom:5px;"><b>Penilaian unjuk kerja diskusi</b> — meliputi keaktifan dalam kelompok, kualitas argumen, serta kemampuan bertanya dan menjawab secara kritis.</li><li style="margin-bottom:5px;"><b>Penilaian hasil LKPD</b> (Lampiran 1) yang dikerjakan oleh setiap kelompok selama kegiatan inti berlangsung.</li><li style="margin-bottom:5px;"><b>Penilaian antarpeserta didik</b> (peer assessment) menggunakan format sederhana dengan tiga kriteria: keaktifan, kerja sama, dan kontribusi terhadap kelompok.</li></ol><p style="margin:0;"><b>Umpan Balik:</b> Diberikan secara langsung selama pembelajaran (verbal) dan secara tertulis di LKPD setelah kegiatan selesai. Format: <i>"Bagian yang sudah tepat: … | Yang perlu ditingkatkan: …"</i></p>`;
+
+            const asesmenSumatifText = kembangAsesmen(d.draftAsesmenSumatif, 'sumatif', topik, d.targetProduk)
+                || `<p style="margin-bottom:8px;"><b>Waktu pelaksanaan:</b> Akhir sesi pembelajaran sebagai evaluasi pencapaian tujuan.</p><p style="margin-bottom:6px;"><b>Bentuk Asesmen:</b></p><ol style="margin:0 0 8px 20px;padding:0;"><li style="margin-bottom:5px;"><b>Tes Tertulis (HOTS)</b> — terdiri dari 5 soal analitis mencakup level pemahaman (C2), penerapan (C3), analisis (C4), evaluasi (C5), dan kreasi (C6) terkait topik <b>${topik}</b>. Waktu pengerjaan: 30–45 menit. Soal tersedia di Lampiran 5.</li><li style="margin-bottom:5px;"><b>Penilaian Produk Akhir</b> — berupa <i>${d.targetProduk || 'proyek/laporan/presentasi/karya'}</i> yang dinilai menggunakan rubrik holistik 4 level (Lampiran 3).</li></ol><p style="margin-bottom:5px;"><b>Pembobotan Nilai:</b></p><ul style="margin:0 0 8px 20px;padding:0;"><li>Tes tertulis: 40%</li><li>Produk akhir: 60%</li></ul><p style="margin:0;"><b>Kriteria Ketercapaian:</b> 86–100 = Sangat Baik &nbsp;|&nbsp; 71–85 = Baik &nbsp;|&nbsp; 56–70 = Cukup &nbsp;|&nbsp; &lt;56 = Perlu Bimbingan.</p>`;
+
+            // LKPD Konten
+            const lkpdKonten = `
+                <p><b>Nama Kelompok:</b> ........................ &nbsp;&nbsp; <b>Kelas:</b> ${kelas}</p>
+                <p><b>Anggota:</b> 1. .................... 2. .................... 3. .................... 4. ....................</p>
+                <p><b>Topik:</b> ${topik}</p>
+                <p><b>Tujuan:</b> ${tp}</p>
+                <h4 style="margin-top:10px;"><b>1. Petunjuk Kegiatan</b></h4>
+                <ol>
+                    <li>Bacalah dengan cermat seluruh petunjuk pada LKPD ini.</li>
+                    <li>Diskusikan setiap pertanyaan bersama anggota kelompok.</li>
+                    <li>Tuliskan jawaban pada kolom yang tersedia.</li>
+                    <li>Presentasikan hasil diskusi di depan kelas.</li>
+                </ol>
+                <h4><b>2. Aktivitas Mengamati</b></h4>
+                <p>Amati fenomena/sumber belajar tentang <b>${topik}</b> yang disediakan guru. Catat hal-hal penting yang kalian temukan!</p>
+                <p style="border-bottom: 1px solid #000; height: 25px;"></p>
+                <p style="border-bottom: 1px solid #000; height: 25px;"></p>
+                <h4><b>3. Aktivitas Menanya</b></h4>
+                <p>Rumuskan minimal 3 pertanyaan dari hasil pengamatan kalian:</p>
+                <ol>
+                    <li style="border-bottom: 1px solid #000; padding-bottom: 15px;">&nbsp;</li>
+                    <li style="border-bottom: 1px solid #000; padding-bottom: 15px;">&nbsp;</li>
+                    <li style="border-bottom: 1px solid #000; padding-bottom: 15px;">&nbsp;</li>
+                </ol>
+                <h4><b>4. Aktivitas Menalar & Menyimpulkan</b></h4>
+                <p>Berdasarkan diskusi kelompok, buatlah kesimpulan utama tentang <b>${topik}</b>:</p>
+                <p style="border-bottom: 1px solid #000; height: 25px;"></p>
+                <p style="border-bottom: 1px solid #000; height: 25px;"></p>
+                <p style="border-bottom: 1px solid #000; height: 25px;"></p>
+            `;
+
+            // ===== BANK DESKRIPTOR DPL (8 Dimensi Profil Lulusan) =====
+            // Setiap DPL punya: indikator singkat (untuk observasi) dan 4 level deskriptor (untuk rubrik)
+            const bankDPL = {
+                "Keimanan & Ketakwaan": {
+                    indikator: "Sikap religius & akhlak mulia",
+                    deskripsi: "Menunjukkan sikap religius, jujur, dan berakhlak mulia",
+                    rubrik: {
+                        4: "Selalu menunjukkan sikap religius (berdoa, bersyukur), jujur dalam mengerjakan tugas, dan menghormati teman tanpa diingatkan.",
+                        3: "Sering menunjukkan sikap religius, jujur, dan menghormati teman.",
+                        2: "Kadang-kadang menunjukkan sikap religius dan jujur, perlu diingatkan.",
+                        1: "Belum menunjukkan sikap religius dan kejujuran, masih perlu bimbingan."
+                    }
+                },
+                "Kewargaan": {
+                    indikator: "Kepedulian sosial & cinta tanah air",
+                    deskripsi: "Menunjukkan kepedulian terhadap sesama, lingkungan, dan tanah air",
+                    rubrik: {
+                        4: "Aktif menunjukkan kepedulian sosial, menghargai keberagaman, dan menjunjung nilai-nilai kebangsaan dalam diskusi.",
+                        3: "Menunjukkan kepedulian sosial dan menghargai keberagaman saat aktivitas kelompok.",
+                        2: "Cukup peduli pada teman, namun belum aktif menyuarakan nilai kebangsaan.",
+                        1: "Belum menunjukkan kepedulian sosial maupun penghargaan terhadap keberagaman."
+                    }
+                },
+                "Penalaran Kritis": {
+                    indikator: "Berpikir kritis & analitis",
+                    deskripsi: "Mampu menganalisis informasi, mengajukan pertanyaan tajam, dan menarik kesimpulan logis",
+                    rubrik: {
+                        4: "Mampu menganalisis informasi secara mendalam, mengajukan pertanyaan tajam, dan menarik kesimpulan dengan argumen logis serta data pendukung.",
+                        3: "Mampu menganalisis informasi dan menarik kesimpulan dengan argumen yang cukup logis.",
+                        2: "Mampu menyebutkan fakta namun analisisnya masih dangkal.",
+                        1: "Belum mampu menganalisis informasi dan menarik kesimpulan dengan tepat."
+                    }
+                },
+                "Kreativitas": {
+                    indikator: "Gagasan orisinal & inovatif",
+                    deskripsi: "Mampu menghasilkan gagasan, karya, atau solusi yang orisinal dan bernilai",
+                    rubrik: {
+                        4: "Menghasilkan gagasan/karya yang sangat orisinal, inovatif, dan menarik dengan beragam sudut pandang.",
+                        3: "Menghasilkan gagasan/karya yang cukup orisinal dan menarik.",
+                        2: "Gagasan/karya masih meniru contoh yang ada, sedikit modifikasi.",
+                        1: "Belum mampu menghasilkan gagasan atau karya secara mandiri."
+                    }
+                },
+                "Kolaborasi": {
+                    indikator: "Kerja sama dalam kelompok",
+                    deskripsi: "Mampu bekerja sama, menghargai kontribusi teman, dan menyelesaikan tugas bersama",
+                    rubrik: {
+                        4: "Sangat aktif berkontribusi dalam kelompok, menghargai pendapat teman, dan memimpin pembagian tugas dengan adil.",
+                        3: "Aktif bekerja sama dan menghargai pendapat teman dalam kelompok.",
+                        2: "Cukup terlibat dalam kelompok namun belum aktif menyumbang ide.",
+                        1: "Belum mampu bekerja sama dan kurang terlibat dalam kelompok."
+                    }
+                },
+                "Kemandirian": {
+                    indikator: "Tanggung jawab & inisiatif belajar",
+                    deskripsi: "Menunjukkan tanggung jawab, inisiatif, dan ketekunan dalam belajar",
+                    rubrik: {
+                        4: "Sangat mandiri menyelesaikan tugas tepat waktu, berinisiatif mencari sumber tambahan, dan tekun menghadapi kesulitan.",
+                        3: "Mandiri menyelesaikan tugas tepat waktu dan cukup tekun belajar.",
+                        2: "Menyelesaikan tugas namun masih perlu diingatkan oleh guru.",
+                        1: "Belum mampu menyelesaikan tugas secara mandiri, sangat bergantung pada bimbingan."
+                    }
+                },
+                "Kesehatan": {
+                    indikator: "Kesehatan jasmani & rohani",
+                    deskripsi: "Menjaga kebugaran fisik, kebersihan, dan keseimbangan emosi selama belajar",
+                    rubrik: {
+                        4: "Sangat menjaga kebugaran, kebersihan diri, dan menunjukkan keseimbangan emosi yang baik selama pembelajaran.",
+                        3: "Menjaga kebersihan dan menunjukkan keseimbangan emosi yang cukup baik.",
+                        2: "Cukup menjaga kebersihan, namun kadang menunjukkan emosi yang kurang stabil.",
+                        1: "Belum menjaga kebersihan dan kesehatan emosi dengan baik."
+                    }
+                },
+                "Komunikasi": {
+                    indikator: "Komunikasi lisan & tulisan",
+                    deskripsi: "Mampu menyampaikan gagasan secara jelas, runtut, dan santun baik lisan maupun tulisan",
+                    rubrik: {
+                        4: "Menyampaikan gagasan dengan sangat jelas, runtut, percaya diri, dan menggunakan bahasa yang santun serta tepat sasaran.",
+                        3: "Menyampaikan gagasan dengan jelas dan cukup runtut.",
+                        2: "Mampu menyampaikan gagasan namun kurang runtut/percaya diri.",
+                        1: "Belum mampu menyampaikan gagasan secara jelas dan runtut."
+                    }
+                }
+            };
+
+            // Ambil DPL terpilih — normalisasi nilai agar & vs &amp; tidak bermasalah
+            const normalizeDPL = (str) => str.replace(/&amp;/g, '&').trim();
+            let dplTerpilih = (d.profil || [])
+                .map(normalizeDPL)
+                .filter(p => bankDPL[p]);
+            // Fallback: jika tidak ada yang cocok, gunakan 4 inti default
+            if (dplTerpilih.length < 2) {
+                dplTerpilih = ["Penalaran Kritis", "Kolaborasi", "Kreativitas", "Kemandirian"];
+            }
+
+            // ===== LEMBAR OBSERVASI dinamis berdasarkan DPL terpilih =====
+            const headerObservasi = dplTerpilih.map(dpl =>
+                `<th style="padding: 6px; background-color: #e2e8f0; border: 1px solid #000; font-size: 9.5pt;">${dpl}<br><span style="font-weight:normal; font-size:8.5pt; font-style:italic;">(${bankDPL[dpl].indikator})</span></th>`
+            ).join('');
+            const kolomKosongObservasi = dplTerpilih.map(() => '<td style="border: 1px solid #000; padding: 6px;">&nbsp;</td>').join('');
+            const lembarObservasi = `
+                <p style="margin-bottom: 8px;">Lembar observasi sikap dan keterlibatan peserta didik selama pembelajaran <b>${topik}</b>. Aspek penilaian disesuaikan dengan <b>Dimensi Profil Lulusan</b> yang difokuskan dalam pembelajaran ini.</p>
+                <table border="1" style="border-collapse: collapse; width: 100%; font-size: 10pt; border: 1px solid #000;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 6px; background-color: #e2e8f0; border: 1px solid #000; width: 5%;">No</th>
+                            <th style="padding: 6px; background-color: #e2e8f0; border: 1px solid #000; width: 25%;">Nama Peserta Didik</th>
+                            ${headerObservasi}
+                            <th style="padding: 6px; background-color: #e2e8f0; border: 1px solid #000;">Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[1,2,3,4,5].map(n => `<tr><td style="padding: 6px; border: 1px solid #000; text-align:center;">${n}</td><td style="border: 1px solid #000; padding: 6px;">&nbsp;</td>${kolomKosongObservasi}<td style="border: 1px solid #000; padding: 6px;">&nbsp;</td></tr>`).join('')}
+                    </tbody>
+                </table>
+                <p style="font-size: 9pt; margin-top: 6px;"><b>Skor:</b> 4 = Sangat Baik (SB) | 3 = Baik (B) | 2 = Cukup (C) | 1 = Perlu Bimbingan (PB)</p>
+                <p style="font-size: 9pt; margin-top: 4px;"><b>Petunjuk:</b> Beri skor 1-4 pada setiap kolom dimensi sesuai pengamatan. Lihat rubrik penilaian (Lampiran 3) untuk deskriptor setiap level.</p>
+            `;
+
+            // ===== RUBRIK PENILAIAN dinamis berdasarkan DPL terpilih (sinkron dengan lembar observasi) =====
+            const barisRubrik = dplTerpilih.map(dpl => {
+                const data = bankDPL[dpl];
+                return `
+                    <tr>
+                        <td style="border:1px solid #000; padding: 8px; vertical-align: top; background-color: #f9fafb;"><b>${dpl}</b><br><span style="font-size:9pt; font-style:italic; color:#374151;">${data.deskripsi}</span></td>
+                        <td style="border:1px solid #000; padding: 8px; vertical-align: top;">${data.rubrik[4]}</td>
+                        <td style="border:1px solid #000; padding: 8px; vertical-align: top;">${data.rubrik[3]}</td>
+                        <td style="border:1px solid #000; padding: 8px; vertical-align: top;">${data.rubrik[2]}</td>
+                        <td style="border:1px solid #000; padding: 8px; vertical-align: top;">${data.rubrik[1]}</td>
+                    </tr>
+                `;
+            }).join('');
+            const rubrikPenilaian = `
+                <p style="margin-bottom: 8px;">Rubrik penilaian sikap & keterampilan peserta didik berdasarkan <b>Dimensi Profil Lulusan</b> yang dikembangkan dalam pembelajaran <b>${topik}</b>. Rubrik ini digunakan bersamaan dengan Lembar Observasi (Lampiran 2).</p>
+                <table border="1" style="border-collapse: collapse; width: 100%; font-size: 10pt; border: 1px solid #000;">
+                    <thead>
+                        <tr style="background-color: #e2e8f0;">
+                            <th style="padding: 6px; border: 1px solid #000; width: 18%;">Dimensi yang Dinilai</th>
+                            <th style="padding: 6px; border: 1px solid #000;">Sangat Baik (4)</th>
+                            <th style="padding: 6px; border: 1px solid #000;">Baik (3)</th>
+                            <th style="padding: 6px; border: 1px solid #000;">Cukup (2)</th>
+                            <th style="padding: 6px; border: 1px solid #000;">Perlu Bimbingan (1)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${barisRubrik}
+                    </tbody>
+                </table>
+                <p style="font-size: 9pt; margin-top: 8px;"><b>Pedoman Penilaian:</b></p>
+                <ul style="font-size: 9pt; margin: 4px 0 0 20px;">
+                    <li><b>Nilai Akhir</b> = (Total Skor / Skor Maksimum) × 100</li>
+                    <li><b>Skor Maksimum</b> = Jumlah Dimensi (${dplTerpilih.length}) × 4 = ${dplTerpilih.length * 4}</li>
+                    <li><b>Predikat:</b> 86-100 = Sangat Baik | 71-85 = Baik | 56-70 = Cukup | &lt;56 = Perlu Bimbingan</li>
+                </ul>
+            `;
+
+            // Lembar refleksi
+            const lembarRefleksi = `
+                <p>Pertanyaan refleksi untuk peserta didik setelah mempelajari <b>${topik}</b>:</p>
+                <ul>
+                    <li>Apa hal paling menarik yang kamu pelajari hari ini tentang ${topik}?</li>
+                    <li>Bagian mana dari pembelajaran ${topik} yang masih sulit kamu pahami? Mengapa?</li>
+                    <li>Bagaimana materi ${topik} ini berkaitan dengan kehidupan sehari-harimu?</li>
+                    <li>Apa strategi belajar yang paling membantumu memahami materi ini?</li>
+                    <li>Apa yang ingin kamu pelajari lebih dalam terkait ${topik}?</li>
+                </ul>
+                <p style="margin-top: 10px;"><b>Refleksi Guru:</b></p>
+                <ul>
+                    <li>Apakah seluruh peserta didik mencapai tujuan pembelajaran?</li>
+                    <li>Strategi apa yang paling efektif dalam pembelajaran ini?</li>
+                    <li>Apa yang perlu diperbaiki untuk pertemuan berikutnya?</li>
+                </ul>
+            `;
+
+            // Deteksi apakah guru meminta soal PG di asesmen sumatif
+            const draftSumatifRaw = (d.draftAsesmenSumatif || '').toLowerCase();
+            const mintaPG = draftSumatifRaw.includes('pg') || draftSumatifRaw.includes('pilihan ganda') || draftSumatifRaw.includes('quizizz') || draftSumatifRaw.includes('quiz');
+            const jumlahSoalPG = (() => {
+                const m = draftSumatifRaw.match(/(\d+)\s*(?:soal|butir|pg|pilihan ganda)/i);
+                return m ? parseInt(m[1]) : 10;
+            })();
+
+            // Soal PG (hanya dibuat jika guru meminta PG; jumlah sesuai yang guru isi)
+            const soalPGTemplate = mintaPG ? (() => {
+                const pgItems = [];
+                for (let i = 1; i <= jumlahSoalPG; i++) {
+                    pgItems.push(`<li style="margin-bottom:22px; padding-left:4px;">
+                        <div style="margin-bottom:8px;">[Pertanyaan pilihan ganda nomor ${i} tentang <b>${topik}</b> — tingkat C2–C4]</div>
+                        <div style="margin-left:10px; line-height:1.7;">
+                            <div>A. [Opsi A]</div>
+                            <div>B. [Opsi B]</div>
+                            <div>C. [Opsi C]</div>
+                            <div>D. [Opsi D]</div>
+                            <div>E. [Opsi E]</div>
+                        </div>
+                        <div style="margin-top:8px; padding:6px 10px; background-color:#f0f9ff; border-left:3px solid #0284c7; border-radius:3px;">
+                            <div><b>Jawaban: [Huruf]</b></div>
+                            <div style="margin-top:4px;"><b>Pembahasan:</b> <i>[Jelaskan mengapa jawaban tersebut benar dan mengapa opsi lain salah, kaitkan dengan konsep ${topik} yang dipelajari.]</i></div>
+                        </div>
+                    </li>`);
+                }
+                return `<p style="margin-bottom:10px;"><b>Jumlah soal:</b> ${jumlahSoalPG} soal PG &nbsp;|&nbsp; <b>Topik:</b> ${topik} &nbsp;|&nbsp; <b>Alokasi waktu:</b> ${jumlahSoalPG <= 5 ? '10–15' : '20–30'} menit &nbsp;|&nbsp; <b>Skor per soal:</b> ${Math.floor(100/jumlahSoalPG)} poin</p><ol style="padding-left:20px;">${pgItems.join('')}</ol><p style="font-size:9pt;color:#6b7280;margin-top:8px;"><i>Catatan: Soal di atas merupakan kerangka template. Gunakan versi AI (dengan API Key Gemini) untuk soal PG yang lebih lengkap dan akurat sesuai topik.</i></p>`;
+            })() : '';
+
+            // Soal latihan
+            const soalLatihan = `
+                <p><b>Petunjuk:</b> Kerjakan soal-soal berikut secara mandiri!</p>
+                <ol>
+                    <li>Jelaskan pengertian <b>${topik}</b> dengan kata-katamu sendiri! <i>(C2 - Pemahaman)</i><br><b>Kunci:</b> Jawaban menggambarkan konsep dasar ${topik} secara akurat dengan bahasa peserta didik.</li>
+                    <li>Berikan 2 (dua) contoh konkret penerapan ${topik} dalam kehidupan sehari-hari! <i>(C3 - Penerapan)</i><br><b>Kunci:</b> Disebutkan minimal 2 contoh yang relevan dan kontekstual.</li>
+                    <li>Analisislah hubungan antara ${topik} dengan ${d.elemen || 'aspek pembelajaran lainnya'}! <i>(C4 - Analisis)</i><br><b>Kunci:</b> Menunjukkan keterkaitan konsep secara logis dan terstruktur.</li>
+                    <li>Bandingkan dua sudut pandang berbeda mengenai ${topik}, lalu evaluasi mana yang lebih kuat argumennya! <i>(C5 - Evaluasi)</i><br><b>Kunci:</b> Menyajikan dua perspektif dan memberikan justifikasi pilihan dengan alasan yang kuat.</li>
+                    <li>Rancanglah sebuah ${d.targetProduk || 'karya/proyek sederhana'} yang mengintegrasikan konsep ${topik}! <i>(C6 - Mencipta)</i><br><b>Kunci:</b> Rancangan menunjukkan originalitas dan penerapan konsep ${topik} secara tepat.</li>
+                </ol>
+            `;
+
+            // Daftar pustaka
+            const daftarPustaka = `
+                <ul>
+                    <li>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. (2024). <i>Panduan Pembelajaran dan Asesmen Kurikulum Merdeka</i>. Jakarta: Kemendikbudristek.</li>
+                    <li>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. (2025). <i>Kerangka Pembelajaran Mendalam (Deep Learning)</i>. Jakarta: Pusat Kurikulum dan Pembukuan.</li>
+                    <li>Buku Siswa ${mapel} ${kelas}. (2024). Pusat Perbukuan, Kemendikbudristek.</li>
+                    <li>Buku Guru ${mapel} ${kelas}. (2024). Pusat Perbukuan, Kemendikbudristek.</li>
+                    <li>Sumber daring relevan: Platform Merdeka Mengajar (PMM), Rumah Belajar, dan jurnal ilmiah terkait <i>${topik}</i>.</li>
+                </ul>
+            `;
+
+            // Helper: jika field kerangka diisi guru, pakai itu; jika tidak, gunakan default
+            const useFieldOr = (field, fallback) => (field && field.trim()) ? field.trim() : fallback;
+
+            const lintasDisiplinText = useFieldOr(d.lintasDisiplin,
+                `Topik <b>${topik}</b> dapat diintegrasikan dengan mata pelajaran lain seperti Bahasa Indonesia (literasi & komunikasi hasil belajar), Pendidikan Pancasila (nilai sosial), Informatika (pemanfaatan media digital), serta Seni Budaya (presentasi kreatif).`);
+
+            const topikKontekstualText = `Topik <b>${topik}</b> dipilih karena relevan dengan pengalaman dan lingkungan peserta didik <b>${kelas}</b>. Topik ini bermakna karena dapat ditemui dalam kehidupan sehari-hari, mendukung pemahaman lintas disiplin, dan membantu peserta didik mengembangkan keterampilan berpikir tingkat tinggi.`;
+
+            const kerangkaPedagogisText = useFieldOr(d.praktikPedagogis,
+                `Praktik pedagogis dilakukan melalui <b>${d.pendekatan}</b> dengan model <b>${model}</b> dan metode <b>${d.metode}</b>. Guru menerapkan diferensiasi pembelajaran, scaffolding, serta dialog reflektif untuk memenuhi kebutuhan beragam peserta didik.`);
+
+            const kerangkaKemitraanText = useFieldOr(d.kemitraan,
+                `Pembelajaran melibatkan kemitraan dengan orang tua/wali (komunikasi perkembangan belajar), sesama guru (kolaborasi lintas disiplin), serta komunitas sekitar sekolah (narasumber, lingkungan belajar nyata) untuk memperkaya pengalaman peserta didik tentang ${topik}.`);
+
+            const kerangkaLingkunganText = useFieldOr(d.lingkungan,
+                `Lingkungan pembelajaran ditata aman, nyaman, dan inklusif. Mencakup lingkungan fisik (ruang kelas/laboratorium yang kondusif), lingkungan sosial (budaya saling menghargai dan kolaboratif), serta lingkungan virtual (akses sumber digital relevan).`);
+
+            // Gabungan jenis konten + detail Ruang Murid
+            const ruangMuridFull = (() => {
+                const jenis = (d.jenisRuangMurid || []).join(', ');
+                const detail = (d.ruangMurid || '').trim();
+                if (!jenis && !detail) return '';
+                if (jenis && detail) return `${jenis} (${detail})`;
+                return jenis || detail;
+            })();
+
+            // Bangun narasi Pemanfaatan Digital yang TERINTEGRASI:
+            // Menggabungkan Pemanfaatan Digital + PID/MPI dari sarpras + jenis konten Ruang Murid
+            const kerangkaDigitalText = (() => {
+                const sarprasRawX = (d.sarpras || []).join(' ').toLowerCase();
+                const digiRawX = (d.pemanfaatanDigital || '').toLowerCase();
+                const adaPID = sarprasRawX.includes('pid') || digiRawX.includes('pid');
+                const adaMPI = sarprasRawX.includes('mpi') || digiRawX.includes('mpi');
+                const bagian = [];
+
+                // 1. Pemanfaatan Digital (input guru) atau default
+                if (d.pemanfaatanDigital && d.pemanfaatanDigital.trim()) {
+                    bagian.push(`Pembelajaran memanfaatkan tools/platform digital sebagai berikut: <b>${d.pemanfaatanDigital.trim()}</b> untuk mendukung interaktivitas, kolaborasi, dan asesmen digital terkait <b>${topik}</b>.`);
+                } else {
+                    bagian.push(`Pembelajaran memanfaatkan teknologi digital seperti video pembelajaran (YouTube edukasi), media presentasi interaktif (Canva/Google Slides), serta asesmen digital (Quizizz/Google Form) terkait <b>${topik}</b>.`);
+                }
+
+                // 2. Tambahkan PID jika dipilih
+                if (adaPID) {
+                    bagian.push(`Guru menggunakan <b>Papan Interaktif Digital (PID)</b> — papan tulis digital yang dapat disentuh langsung — untuk menampilkan materi, menulis/menggambar penjelasan secara interaktif, serta menjalankan media pembelajaran. Peserta didik juga dapat berinteraksi langsung dengan PID saat mengikuti kuis atau menyusun jawaban di depan kelas.`);
+                }
+
+                // 3. Tambahkan MPI jika dipilih (dan belum disebut di Ruang Murid)
+                const mpiDariRuangMurid = (d.jenisRuangMurid || []).includes('MPI (Media Pembelajaran Interaktif)');
+                if (adaMPI && !mpiDariRuangMurid) {
+                    bagian.push(`<b>MPI (Media Pembelajaran Interaktif)</b> ditampilkan melalui LCD${adaPID ? '/PID' : ' Projector'} untuk memperkaya visualisasi konsep dan melibatkan peserta didik secara aktif.`);
+                }
+
+                // 4. Tambahkan konten Ruang Murid jika dipilih
+                if (ruangMuridFull) {
+                    bagian.push(`Pembelajaran juga memanfaatkan konten dari platform <b>Ruang Murid</b> (Kemendikbudristek), berupa: <i>${ruangMuridFull}</i>. Konten ini diintegrasikan ke dalam alur pembelajaran sebagai sumber belajar utama atau pendamping yang relevan dengan topik <b>${topik}</b>, dan diakses peserta didik secara mandiri maupun terbimbing.`);
+                }
+
+                // 5. Tambahkan konten dari luar Ruang Murid (custom) jika diisi
+                if (d.kontenLuarRM && d.kontenLuarRM.trim()) {
+                    bagian.push(`Selain itu, pembelajaran diperkaya dengan konten/aplikasi dari luar platform Ruang Murid, yaitu: <b>${d.kontenLuarRM.trim()}</b>. Sumber tambahan ini dipilih guru karena relevansinya dengan topik <b>${topik}</b> dan kemampuannya untuk memperkuat keterlibatan peserta didik.`);
+                }
+
+                return bagian.join(' ');
+            })();
+
+            // kerangkaRuangMuridText: dikosongkan karena sudah digabung ke kerangkaDigitalText
+            const kerangkaRuangMuridText = '';
+
+            const karakteristikMateriText = `Materi <b>${topik}</b> termasuk dalam elemen <b>${d.elemen}</b>. Karakteristik materi mencakup dimensi faktual, konseptual, prosedural, dan metakognitif, sehingga membutuhkan pendekatan pembelajaran yang holistik dan kontekstual. Tingkat kesulitan disesuaikan dengan tahap perkembangan peserta didik ${kelas}.`;
+
+            const prinsipMendalamText = `Pembelajaran dirancang dengan prinsip <b>${mendalamStr}</b>. <b>Berkesadaran</b>: peserta didik aktif menyadari proses dan tujuan belajarnya. <b>Bermakna</b>: konteks pembelajaran terhubung dengan pengalaman nyata dan lintas disiplin. <b>Menggembirakan</b>: aktivitas dirancang menarik, kolaboratif, dan menumbuhkan rasa ingin tahu peserta didik.`;
+
+            // Deteksi tool digital untuk integrasi pengalaman belajar
+            const digiRaw = (d.pemanfaatanDigital || '').toLowerCase();
+            const sarprasRawPB = (d.sarpras || []).join(' ').toLowerCase();
+            const digiLabel = (() => {
+                if (digiRaw.includes('pid')) return 'Papan Interaktif Digital (PID)';
+                if (digiRaw.includes('mpi')) return 'MPI (Media Pembelajaran Interaktif)';
+                if (digiRaw.includes('quizizz')) return 'Quizizz';
+                if (digiRaw.includes('kahoot')) return 'Kahoot!';
+                if (digiRaw.includes('canva')) return 'Canva for Education';
+                if (digiRaw.includes('padlet')) return 'Padlet';
+                if (digiRaw.includes('google form')) return 'Google Form';
+                if (digiRaw.includes('video')) return 'video pembelajaran digital';
+                if (sarprasRawPB.includes('chromebook')) return 'perangkat Chromebook/gawai';
+                return '';
+            })();
+            const adaDigi = digiLabel !== '';
+
+            const pengalamanMemahamiText = `Peserta didik membangun pemahaman mendalam tentang <b>${topik}</b> melalui serangkaian aktivitas eksplorasi yang bermakna. ${adaDigi ? `Dengan memanfaatkan <b>${digiLabel}</b>, peserta didik mengakses konten pembelajaran secara interaktif — mengamati visualisasi, membaca penjelasan konsep, dan memaknai istilah-istilah kunci dalam konteks yang konkret. ` : ''}Mereka menghubungkan pengetahuan baru dengan pengalaman yang telah mereka miliki sebelumnya, sehingga terbentuk representasi mental yang akurat dan terintegrasi tentang ${topik.toLowerCase()}. Indikator keberhasilan: peserta didik mampu menjelaskan ulang konsep utama dengan bahasa mereka sendiri, menyebutkan contoh relevan dari kehidupan nyata, serta membedakan konsep yang serupa dengan tepat.`;
+
+            const pengalamanMengaplikasiText = `Peserta didik mentransfer pemahaman tentang <b>${topik}</b> ke dalam situasi baru yang belum pernah mereka hadapi sebelumnya. ${adaDigi ? `Kegiatan ini diperkuat dengan penggunaan <b>${digiLabel}</b> sebagai media untuk mengerjakan latihan kontekstual, menyajikan solusi secara digital, atau berkolaborasi dalam menghasilkan produk belajar (${d.targetProduk || 'karya belajar'}). ` : `Peserta didik menghasilkan produk belajar berupa <b>${d.targetProduk || 'karya/laporan/presentasi'}</b> yang menunjukkan kemampuan menerapkan konsep dalam konteks nyata. `}Mereka belajar memilih strategi yang tepat, menghubungkan konsep antardisiplin, dan mempertanggungjawabkan pilihan mereka di hadapan teman sekelas. Indikator: peserta didik menyelesaikan persoalan kontekstual dengan tepat dan mampu menjelaskan alasan di balik setiap langkah yang mereka ambil.`;
+
+            const pengalamanMerefleksiText = `Di akhir kegiatan pembelajaran, peserta didik mengembangkan <b>kesadaran metakognitif</b> — kemampuan menyadari, mengamati, dan mengevaluasi proses berpikirnya sendiri selama mempelajari <b>${topik}</b>. ${adaDigi ? 'Melalui fitur refleksi digital' + (digiRaw.includes('quizizz') || digiRaw.includes('kahoot') ? ' pada <b>' + digiLabel + '</b> (hasil kuis langsung terlihat sebagai cermin pemahaman)' : digiRaw.includes('padlet') ? ' di <b>Padlet</b> sebagai ruang berbagi refleksi bersama' : '') + ', peserta didik dapat melihat sejauh mana pemahaman mereka berkembang. ' : ''}Peserta didik menjawab secara jujur: apa yang benar-benar telah dipahami, bagian mana yang masih kabur, strategi belajar mana yang paling efektif, dan bagaimana konsep ${topik.toLowerCase()} relevan dengan kehidupannya ke depan. Indikator: peserta didik mampu mengidentifikasi kekuatan dan area pengembangan dirinya sebagai pelajar, serta merumuskan langkah tindak lanjut yang konkret dan realistis.`;
+            const adaBermakna = mendalamStr.includes('Bermakna');
+            const adaBerkesadaran = mendalamStr.includes('Berkesadaran');
+            const adaMenggembirakan = mendalamStr.includes('Menggembirakan');
+            const pengalamanMemahamiFinal = pengalamanMemahamiText
+                + (adaBerkesadaran ? ' Murid secara sadar memantau bagian mana yang sudah dipahami dan bagian mana yang masih perlu diperdalam.' : '')
+                + (adaBermakna ? ' Pemahaman ini tumbuh dari keterhubungan dengan pengalaman dan kepentingan hidup murid, sehingga konsep tidak sekadar dihafal.' : '');
+            const pengalamanMengaplikasiFinal = pengalamanMengaplikasiText
+                + (adaBermakna ? ' Murid melihat langsung manfaat konsep ini bagi kehidupannya sendiri.' : '')
+                + (adaMenggembirakan ? ' Penerapan dilakukan secara kolaboratif dan penuh rasa ingin tahu, sehingga murid terlibat secara bermutu.' : '');
+            const pengalamanMerefleksiFinal = pengalamanMerefleksiText
+                + (adaBerkesadaran ? ' Murid menuliskan tujuan belajarnya di awal dan membandingkannya dengan capaian nyatanya.' : '')
+                + (adaMenggembirakan ? ' Murid juga merayakan kemajuan belajarnya sebagai bentuk kepuasan intelektual.' : '');
+
+            return {
+                identifikasi_pd: `Peserta didik <b>${kelas}</b> berada pada tahap perkembangan ${infoJenjangT.tahapKognitif}. Karakteristik peserta didik ${d.target.toLowerCase()} memerlukan strategi pembelajaran yang relevan dengan minat dan gaya belajar mereka. Kesiapan belajar bervariasi sehingga diperlukan pendekatan diferensiasi.`,
+                karakteristik_materi: karakteristikMateriText,
+                materi_faktual: `Fakta-fakta utama, definisi operasional, istilah penting, simbol, contoh nyata, dan data terkait <b>${topik}</b> yang dapat diamati dan diverifikasi peserta didik.`,
+                materi_konseptual: `Konsep, prinsip, generalisasi, dan teori utama yang menjelaskan struktur dan hubungan antar elemen dalam <b>${topik}</b>.`,
+                materi_prosedural: `Langkah-langkah, prosedur kerja, metode, dan teknik sistematis dalam mempraktikkan/menyelesaikan persoalan terkait <b>${topik}</b>.`,
+                materi_metakognitif: `Strategi berpikir, refleksi proses belajar, dan kesadaran peserta didik terhadap cara mereka memahami serta menerapkan konsep <b>${topik}</b>.`,
+                profil_deskripsi: `Pembelajaran ini mengembangkan Dimensi Profil Lulusan: <b>${profilStr}</b>. Peserta didik dilatih berpikir kritis, berkreasi, dan bekerja sama dalam memecahkan persoalan kontekstual sambil membangun karakter sesuai nilai-nilai Pancasila.`,
+                pendekatan_mendalam_desc: prinsipMendalamText,
+                topik_kontekstual: topikKontekstualText,
+                lintas_disiplin: lintasDisiplinText,
+                kerangka_pedagogis: kerangkaPedagogisText,
+                kerangka_kemitraan: kerangkaKemitraanText,
+                kerangka_lingkungan: kerangkaLingkunganText,
+                kerangka_digital: kerangkaDigitalText,
+                kerangka_ruang_murid: kerangkaRuangMuridText,
+                dif_konten: difKonten,
+                dif_proses: difProses,
+                dif_produk: difProduk,
+                prinsip_mendalam: prinsipMendalamText,
+                pengalaman_memahami: pengalamanMemahamiFinal,
+                pengalaman_mengaplikasi: pengalamanMengaplikasiFinal,
+                pengalaman_merefleksi: pengalamanMerefleksiFinal,
+                langkah_pendahuluan: toOL(langkahPendahuluanFinal),
+                langkah_inti: toOL(langkahIntiArr),
+                langkah_penutup: toOL(langkahPenutupFinal),
+                asesmen_awal: asesmenAwalText,
+                asesmen_formatif: asesmenFormatifText,
+                asesmen_sumatif: asesmenSumatifText,
+                lkpd_konten: lkpdKonten,
+                lembar_observasi: lembarObservasi,
+                rubrik_penilaian: rubrikPenilaian,
+                lembar_refleksi: lembarRefleksi,
+                soal_pg: soalPGTemplate,
+                soal_latihan: soalLatihan,
+                daftar_pustaka: daftarPustaka
+            };
+        }
+
+        function renderRPM(d, ai) {
+            const tStyle = `style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', Times, serif; font-size: 11pt; margin-bottom: 15px; border: 1px solid black;"`;
+            const thStyle = `style="border: 1px solid black; padding: 6px 8px; vertical-align: top; background-color: #f3f4f6; font-weight: bold;"`;
+            const tdStyle = `style="border: 1px solid black; padding: 6px 8px; vertical-align: top;"`;
+            const tdBold = `style="border: 1px solid black; padding: 6px 8px; vertical-align: top; font-weight: bold; width: 28%;"`;
+            const sectionHeader = (txt) => `<h3 style="font-weight: bold; margin-top: 20px; margin-bottom: 8px; background-color: #1d4ed8; color: white; padding: 6px 10px; font-size: 12pt;">${txt}</h3>`;
+            const subHeader = (txt) => `<h4 style="font-weight: bold; margin-top: 12px; margin-bottom: 5px; color: #1d4ed8;">${txt}</h4>`;
+
+            // Tidak ada banner fallback — Claude AI selalu menghasilkan konten lengkap
+            let bannerFallback = '';
+
+            const html = `
+                <div style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 11pt;">
+                    ${bannerFallback}
+                    <h1 style="text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">RENCANA PEMBELAJARAN MENDALAM (RPM)</h1>
+                    <h2 style="text-align: center; font-size: 12pt; font-weight: bold; margin-bottom: 20px;">KURIKULUM MERDEKA 2025</h2>
+
+                    <!-- IDENTITAS MODUL (Pembuka) -->
+                    <h3 style="font-weight: bold; margin-top: 15px; margin-bottom: 8px; background-color: #1d4ed8; color: white; padding: 6px 10px; font-size: 12pt;">IDENTITAS MODUL</h3>
+                    <table ${tStyle}>
+                        <tr><td ${tdBold}>Mata Pelajaran</td><td ${tdStyle}>${d.mapel}</td></tr>
+                        <tr><td ${tdBold}>Topik / Sub Topik</td><td ${tdStyle}><b>${d.topik}</b></td></tr>
+                        <tr><td ${tdBold}>Elemen</td><td ${tdStyle}>${d.elemen}</td></tr>
+                        <tr><td ${tdBold}>Alokasi Waktu</td><td ${tdStyle}>${d.waktu}</td></tr>
+                        <tr><td ${tdBold}>Fase / Kelas</td><td ${tdStyle}>${d.kelas}</td></tr>
+                        <tr><td ${tdBold}>Semester / Tahun</td><td ${tdStyle}>${d.semester} - ${d.tahun}</td></tr>
+                        <tr><td ${tdBold}>Nama Sekolah</td><td ${tdStyle}>${d.sekolah}</td></tr>
+                        <tr><td ${tdBold}>Nama Penyusun</td><td ${tdStyle}>${d.guruNama}</td></tr>
+                        <tr><td ${tdBold}>Sarana Prasarana</td><td ${tdStyle}>${d.sarpras.join(', ')}</td></tr>
+                        ${d.indikatorKinerja ? `<tr><td ${tdBold}>Fokus PMM</td><td ${tdStyle}><b>${d.indikatorKinerja}</b><ul style="margin:0; padding-left:15px;">${d.fokusPerilaku.map(f => `<li>${f}</li>`).join('')}</ul></td></tr>` : ''}
+                    </table>
+
+                    <!-- ============================================= -->
+                    <!-- BAGIAN I. IDENTIFIKASI                          -->
+                    <!-- ============================================= -->
+                    ${sectionHeader('I. IDENTIFIKASI')}
+                    <table ${tStyle}>
+                        <tr><td ${tdBold}>Peserta Didik</td><td ${tdStyle}>${ai.identifikasi_pd}<br><br><b>Target Murid:</b> ${d.target}</td></tr>
+                        <tr><td ${tdBold}>Materi Pelajaran</td><td ${tdStyle}>${ai.karakteristik_materi}<br><br><b>Pemetaan Dimensi Materi:</b><ol type="a" style="margin:5px 0; padding-left:20px;"><li><b>Faktual:</b> ${ai.materi_faktual}</li><li><b>Konseptual:</b> ${ai.materi_konseptual}</li><li><b>Prosedural:</b> ${ai.materi_prosedural}</li><li><b>Metakognitif:</b> ${ai.materi_metakognitif}</li></ol></td></tr>
+                        <tr><td ${tdBold}>Dimensi Profil Lulusan</td><td ${tdStyle}>${ai.profil_deskripsi}</td></tr>
+                    </table>
+
+                    <!-- ============================================= -->
+                    <!-- BAGIAN II. DESAIN PEMBELAJARAN                 -->
+                    <!-- ============================================= -->
+                    ${sectionHeader('II. DESAIN PEMBELAJARAN')}
+                    <table ${tStyle}>
+                        <tr><td ${tdBold}>Capaian Pembelajaran</td><td ${tdStyle}>${d.cp}</td></tr>
+                        <tr><td ${tdBold}>Lintas Disiplin Ilmu</td><td ${tdStyle}>${ai.lintas_disiplin}</td></tr>
+                        <tr><td ${tdBold}>Tujuan Pembelajaran</td><td ${tdStyle}>${d.tp}</td></tr>
+                        <tr><td ${tdBold}>Topik Pembelajaran</td><td ${tdStyle}>${ai.topik_kontekstual}</td></tr>
+                        <tr><td ${tdBold}>Praktik Pedagogis</td><td ${tdStyle}>${ai.kerangka_pedagogis}</td></tr>
+                        <tr><td ${tdBold}>Kemitraan Pembelajaran</td><td ${tdStyle}>${ai.kerangka_kemitraan}</td></tr>
+                        <tr><td ${tdBold}>Lingkungan Pembelajaran</td><td ${tdStyle}>${ai.kerangka_lingkungan}</td></tr>
+                        <tr><td ${tdBold}>Pemanfaatan Digital</td><td ${tdStyle}>${ai.kerangka_digital}</td></tr>
+                        ${d.bukuPaket && d.bukuPaket.trim() ? `<tr><td ${tdBold}>Buku Paket / Sumber Bacaan</td><td ${tdStyle}>${d.bukuPaket}</td></tr>` : ''}
+                        <tr><td ${tdBold}>Diferensiasi Pembelajaran</td><td ${tdStyle}>
+                            <table class="nested-table" style="width:100%; border-collapse: collapse;">
+                                <tr><th style="border:1px solid #000; padding:5px; background:#e2e8f0;">Konten</th><th style="border:1px solid #000; padding:5px; background:#e2e8f0;">Proses</th><th style="border:1px solid #000; padding:5px; background:#e2e8f0;">Produk</th></tr>
+                                <tr><td style="border:1px solid #000; padding:5px;">${ai.dif_konten}</td><td style="border:1px solid #000; padding:5px;">${ai.dif_proses}</td><td style="border:1px solid #000; padding:5px;">${ai.dif_produk}</td></tr>
+                            </table>
+                        </td></tr>
+                    </table>
+
+                    <!-- ============================================= -->
+                    <!-- BAGIAN III. PENGALAMAN BELAJAR                 -->
+                    <!-- ============================================= -->
+                    ${sectionHeader('III. PENGALAMAN BELAJAR')}
+                    <table ${tStyle}>
+                        <tr><td ${tdBold} style="text-align:center; background-color:#dbeafe;" colspan="2"><b>Langkah-Langkah Pembelajaran</b></td></tr>
+                        <tr><td ${tdBold}>AWAL</td><td ${tdStyle}>${ai.langkah_pendahuluan}</td></tr>
+                        <tr><td ${tdBold}>INTI</td><td ${tdStyle}>
+                            <p style="margin: 0 0 10px 0; font-style:italic; color:#475569;">${ai.prinsip_mendalam}</p>
+                            <p style="margin: 0 0 6px 0;"><b style="color:#1d4ed8;">Sintaks Model: ${d.model}</b></p>
+                            ${ai.langkah_inti}
+                        </td></tr>
+                        ${(d.pengalamanBelajar || []).length ? `<tr><td ${tdBold} style="background-color:#eff6ff;">Pengalaman Belajar Mendalam</td><td ${tdStyle}>
+                            <p style="font-size:9pt; color:#64748b; margin:0 0 8px 0; font-style:italic;">Dimensi pengalaman belajar yang dikembangkan melalui kegiatan inti di atas:</p>
+                            ${d.pengalamanBelajar.includes('Memahami') ? `<p style="margin: 0 0 5px 0;"><b style="color:#1d4ed8;">&#x1F9E0; Memahami</b></p><p style="margin:0 0 10px 0;">${ai.pengalaman_memahami}</p>` : ''}
+                            ${d.pengalamanBelajar.includes('Mengaplikasi') ? `<p style="margin: 0 0 5px 0;"><b style="color:#1d4ed8;">&#x1F4A1; Mengaplikasi</b></p><p style="margin:0 0 10px 0;">${ai.pengalaman_mengaplikasi}</p>` : ''}
+                            ${d.pengalamanBelajar.includes('Merefleksi') ? `<p style="margin: 0 0 5px 0;"><b style="color:#1d4ed8;">&#x1F4AB; Merefleksi</b></p><p style="margin:0;">${ai.pengalaman_merefleksi}</p>` : ''}
+                        </td></tr>` : ''}
+                        <tr><td ${tdBold}>PENUTUP</td><td ${tdStyle}>${ai.langkah_penutup}</td></tr>
+                    </table>
+
+                    <!-- ============================================= -->
+                    <!-- BAGIAN IV. ASESMEN PEMBELAJARAN                -->
+                    <!-- ============================================= -->
+                    ${sectionHeader('IV. ASESMEN PEMBELAJARAN')}
+                    <table ${tStyle}>
+                        <tr><td ${tdBold}>Asesmen pada Awal Pembelajaran</td><td ${tdStyle}>${ai.asesmen_awal}</td></tr>
+                        <tr><td ${tdBold}>Asesmen pada Proses Pembelajaran</td><td ${tdStyle}>${ai.asesmen_formatif}</td></tr>
+                        <tr><td ${tdBold}>Asesmen pada Akhir Pembelajaran</td><td ${tdStyle}>${ai.asesmen_sumatif}</td></tr>
+                    </table>
+
+                    <!-- LAMPIRAN -->
+                    <h3 style="font-weight: bold; margin-top: 25px; margin-bottom: 8px; background-color: #6b7280; color: white; padding: 6px 10px; font-size: 12pt; page-break-before: always;">LAMPIRAN</h3>
+                    
+                    ${subHeader('Lampiran 1. Lembar Kerja Peserta Didik (LKPD)')}
+                    <div style="border: 1px solid black; padding: 15px; margin-bottom: 20px;">${ai.lkpd_konten}</div>
+                    
+                    ${subHeader('Lampiran 2. Lembar Observasi')}
+                    <div style="margin-bottom: 20px;">${ai.lembar_observasi}</div>
+                    
+                    ${subHeader('Lampiran 3. Rubrik Penilaian')}
+                    <div style="margin-bottom: 20px;">${ai.rubrik_penilaian}</div>
+                    
+                    ${subHeader('Lampiran 4. Lembar Refleksi')}
+                    <div style="margin-bottom: 20px;">${ai.lembar_refleksi}</div>
+                    
+                    ${ai.soal_pg && ai.soal_pg.trim().length > 10 ? `
+                    ${subHeader('Lampiran 5. Soal Pilihan Ganda (Asesmen Sumatif)')}
+                    <p style="margin-bottom:8px; font-size:10pt;">Soal pilihan ganda berikut merupakan instrumen asesmen sumatif sesuai permintaan guru. Dapat digunakan secara cetak maupun diinput ke platform digital (Quizizz, Google Form, dsb.).</p>
+                    <div style="margin-bottom: 20px; border: 1px solid black; padding: 15px;">${ai.soal_pg}</div>
+                    ${subHeader('Lampiran 6. Soal Latihan HOTS')}
+                    <div style="margin-bottom: 20px; border: 1px solid black; padding: 15px;">${ai.soal_latihan}</div>
+                    ${subHeader('Lampiran 7. Daftar Pustaka')}
+                    ` : `
+                    ${subHeader('Lampiran 5. Soal Latihan')}
+                    <div style="margin-bottom: 20px; border: 1px solid black; padding: 15px;">${ai.soal_latihan}</div>
+                    ${subHeader('Lampiran 6. Daftar Pustaka')}
+                    `}
+                    
+                    <div style="margin-bottom: 20px; padding-left: 20px;">${ai.daftar_pustaka}</div>
+                    
+                    <!-- TTD FOOTER -->
+                    <table style="margin-top: 50px; width: 100%; border: none; border-collapse: collapse; page-break-inside: avoid;">
+                        <tr>
+                            <td style="width: 50%; vertical-align: top; text-align: center; border: none; padding: 0;">
+                                Mengetahui,<br>
+                                Kepala Sekolah<br>
+                                <br><br><br><br>
+                                <b><u>${d.kepsekNama}</u></b><br>
+                                NIP. ${d.kepsekNip || '-'}
+                            </td>
+                            <td style="width: 50%; vertical-align: top; text-align: center; border: none; padding: 0;">
+                                ${d.sekolah}, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}<br>
+                                Guru Mata Pelajaran<br>
+                                <br><br><br><br>
+                                <b><u>${d.guruNama}</u></b><br>
+                                NIP. ${d.guruNip || '-'}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+            
+            document.getElementById('print-area').innerHTML = html;
+        }
+
+        function copyToClipboard() {
+            const printArea = document.getElementById('print-area');
+            if(!printArea.innerHTML.trim() || printArea.innerHTML.includes("Silakan isi form")) return alert("Generate dokumen terlebih dahulu!");
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = printArea.innerHTML;
+            document.body.appendChild(tempDiv);
+
+            const range = document.createRange();
+            range.selectNodeContents(tempDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                document.execCommand('copy');
+                const toast = document.getElementById('toast');
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+            } catch (err) {
+                alert("Gagal menyalin. Blok teks secara manual lalu CTRL+C.");
+            }
+
+            selection.removeAllRanges();
+            document.body.removeChild(tempDiv);
+        }
+
+        function exportToWord() {
+            const content = document.getElementById('print-area');
+            if(!content.innerHTML.trim() || content.innerHTML.includes("Silakan isi form")) return alert("Generate dokumen terlebih dahulu!");
+
+            const preHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>RPM Document</title></head><body>`;
+            const html = preHtml + content.innerHTML + "</body></html>";
+            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            
+            const downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = 'Rencana_Pembelajaran_Mendalam.doc';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+        // ========== JENJANG SEKOLAH (SD / SMP / SMA) ==========
+        const JENJANG_INFO = {
+            SD: {
+                placeholder: 'Fase A / Kelas 1-2 (atau Fase B / Kelas 3-4, Fase C / Kelas 5-6)',
+                tahapKognitif: 'operasional konkret, sehingga pembelajaran perlu didukung benda nyata, gambar, dan contoh dari lingkungan sekitar',
+                gaya: 'bahasa sederhana dan kalimat pendek, kegiatan konkret serta bermain sambil belajar, durasi aktivitas singkat dan bervariasi'
+            },
+            SMP: {
+                placeholder: 'Fase D / Kelas 7 (atau Kelas 8-9)',
+                tahapKognitif: 'transisi menuju operasional formal, mulai mampu menalar hubungan sebab-akibat dan membandingkan beberapa gagasan',
+                gaya: 'bahasa formal pendidikan yang mudah dipahami, kegiatan kolaboratif dan berbasis proyek sederhana, mulai melatih berpikir analitis'
+            },
+            SMA: {
+                placeholder: 'Fase E / Kelas 10 (atau Fase F / Kelas 11-12)',
+                tahapKognitif: 'operasional formal, siap menerima pembelajaran abstrak dan kontekstual',
+                gaya: 'bahasa akademik, kegiatan yang menuntut analisis, evaluasi, dan pemecahan masalah kompleks secara mandiri'
+            }
+        };
+        function updateJenjangUI(j) {
+            const info = JENJANG_INFO[j] || JENJANG_INFO.SMA;
+            const k = document.getElementById('kelas');
+            if (k) k.placeholder = info.placeholder;
+        }
+        updateJenjangUI(document.getElementById('jenjang') ? document.getElementById('jenjang').value : 'SMA');
+    </script>
+</body>
+</html>
